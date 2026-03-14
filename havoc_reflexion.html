@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reflexión — HAVOC UNDR HEAVEN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500&display=swap');
+
+  :root {
+    --black:  #0A0A0A;
+    --dark:   #1A1A1A;
+    --border: #E0E0E0;
+    --muted:  #999999;
+    --mid:    #555555;
+    --text:   #1A1A1A;
+    --white:  #FFFFFF;
+    --off:    #F7F7F5;
+    --font-display: 'Bebas Neue', Impact, sans-serif;
+    --font-serif:   'Playfair Display', Georgia, serif;
+    --font-body:    'Inter', sans-serif;
+    --font-cond:    'Oswald', sans-serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #FFFFFF; color: var(--text); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── NAV ── */
+  nav { position: sticky; top: 0; z-index: 100; background: var(--black); border-bottom: 1px solid #2A2A2A; padding: 0 48px; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #888; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: #FFF; }
+  .nav-subscribe { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: #FFF; border: 1px solid #444; padding: 7px 18px; transition: all 0.2s; }
+  .nav-subscribe:hover { background: #FFF; color: var(--black); }
+  .nav-dropdown-wrap { position: relative; }
+  .nav-dropdown-wrap > a::after { content: ' ▾'; font-size: 7px; opacity: 0.5; }
+  .nav-dropdown { display: none; position: absolute; top: 52px; left: 0; background: var(--black); border: 1px solid #2A2A2A; border-top: none; min-width: 180px; z-index: 200; }
+  .nav-dropdown-wrap.open .nav-dropdown { display: block; }
+  .nav-dropdown a { display: block; padding: 12px 18px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888; border-bottom: 1px solid #1E1E1E; transition: color 0.2s; }
+  .nav-dropdown a:hover { color: #FFF; }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-search-wrap { display: flex; align-items: center; gap: 0; padding: 10px 14px; border-bottom: 1px solid #1E1E1E; }
+  .nav-search-input { background: transparent; border: none; outline: none; color: #888; font-size: 10px; letter-spacing: 1.5px; font-family: var(--font-body); width: 128px; text-transform: uppercase; }
+  .nav-search-input::placeholder { color: #333; }
+  .nav-search-input:focus { color: #FFF; }
+  .nav-search-btn { background: none; border: none; cursor: pointer; color: #444; font-size: 11px; padding: 0 0 0 6px; transition: color 0.2s; line-height: 1; }
+  .nav-search-btn:hover { color: #FFF; }
+
+  /* ── MASTHEAD ── */
+  .masthead { background: var(--black); padding: 28px 48px 22px; text-align: center; border-bottom: 2px solid #2A2A2A; }
+  .masthead-meta { display: flex; justify-content: space-between; margin-bottom: 20px; }
+  .masthead-meta span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; }
+  .masthead-logo { width: 620px; filter: invert(1); display: block; margin: 0 auto; }
+  .masthead-catchphrase { font-family: var(--font-body); font-size: 14px; font-weight: 600; letter-spacing: 6px; text-transform: uppercase; color: #FFF; margin-top: 14px; }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb { padding: 12px 48px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+  .breadcrumb span { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .breadcrumb .sep { color: var(--border); }
+  .breadcrumb .current { color: var(--text); font-weight: 600; }
+
+  /* ── SECTION TABS — which category we're in ── */
+  .section-tabs {
+    border-bottom: 2px solid var(--text);
+    padding: 0; display: flex;
+    background: var(--white);
+    position: sticky; top: 52px; z-index: 90;
+  }
+
+  .section-tab {
+    font-size: 11px; letter-spacing: 2.5px;
+    text-transform: uppercase; font-weight: 600;
+    padding: 14px 0; color: var(--muted);
+    cursor: pointer; transition: color 0.2s;
+    border-right: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    position: relative; white-space: nowrap;
+    flex: 1; text-align: center;
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+  }
+  .section-tab + .section-tab { border-left: none; }
+  .section-tab:hover { color: var(--text); }
+  .section-tab.active { color: var(--text); }
+  .section-tab.active::after {
+    content: ''; position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 2px; background: var(--text);
+  }
+
+  /* ── CATEGORY HEADER ── */
+  .cat-header {
+    padding: 48px 48px 40px;
+    border-bottom: 1px solid var(--border);
+    max-width: 1200px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 56px; align-items: end;
+  }
+
+  .cat-title {
+    font-family: var(--font-display);
+    font-size: 80px; letter-spacing: 4px;
+    color: var(--text); line-height: 0.9;
+    margin-bottom: 16px;
+  }
+
+  .cat-desc {
+    font-family: var(--font-serif);
+    font-size: 16px; font-style: italic;
+    color: var(--mid); line-height: 1.65;
+    max-width: 500px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+
+  .cat-stats {
+    display: flex; flex-direction: column; gap: 0;
+    border: 1px solid var(--border);
+  }
+
+  .cat-stat-row {
+    display: flex; justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cat-stat-row:last-child { border-bottom: none; }
+
+  .cat-stat-label {
+    font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  .cat-stat-val {
+    font-size: 14px; font-weight: 700; color: var(--text);
+  }
+
+  /* ── TOPIC FILTER ── */
+  .topic-filter {
+    padding: 16px 48px;
+    border-bottom: 1px solid var(--border);
+    background: var(--off);
+    display: flex; gap: 8px; flex-wrap: wrap;
+    align-items: center;
+    max-width: none;
+  }
+
+  .topic-label {
+    font-size: 9px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+    margin-right: 4px; flex-shrink: 0;
+  }
+
+  .topic-pill {
+    font-size: 9px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--border); padding: 5px 12px;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    background: var(--white);
+  }
+  .topic-pill:hover, .topic-pill.active {
+    background: var(--black); color: var(--white);
+    border-color: var(--black);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .cat-body {
+    max-width: 1200px; margin: 0 auto;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 0;
+  }
+
+  /* ── ARTICLE FEED ── */
+  .cat-feed { border-right: 1px solid var(--border); padding: 40px 56px 48px 0; }
+
+  /* Hero item */
+  .feed-hero {
+    padding-bottom: 32px;
+    border-bottom: 2px solid var(--text);
+    margin-bottom: 32px;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .feed-hero:hover { opacity: 0.8; }
+
+  .feed-hero-image {
+    width: 100%; height: 280px;
+    background: #F0F0F0; border: 1px solid var(--border);
+    margin-bottom: 20px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .feed-hero-image::after { content: 'IMAGEN'; font-size: 9px; letter-spacing: 3px; color: #CCC; }
+
+  .feed-hero-eyebrow {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .cat-tag {
+    display: inline-block;
+    font-size: 8px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--white);
+    background: var(--black); padding: 3px 10px;
+  }
+
+  .topic-tag {
+    font-size: 9px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  .feed-hero-title {
+    font-family: var(--font-serif);
+    font-size: 32px; font-weight: 900;
+    line-height: 1.1; color: var(--text); margin-bottom: 12px;
+  }
+
+  .feed-hero-deck {
+    font-family: var(--font-serif);
+    font-size: 16px; font-style: italic;
+    color: var(--mid); line-height: 1.55; margin-bottom: 14px;
+  }
+
+  .feed-hero-meta {
+    font-size: 10px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted);
+    display: flex; gap: 16px;
+  }
+
+  /* Standard feed items */
+  .feed-item {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr 120px;
+    gap: 18px; cursor: pointer; transition: opacity 0.2s;
+  }
+  .feed-item:hover { opacity: 0.7; }
+  .feed-item:last-child { border-bottom: none; }
+
+  .feed-item-eyebrow {
+    display: flex; gap: 8px; align-items: center;
+    margin-bottom: 7px;
+  }
+
+  .feed-item-title {
+    font-family: var(--font-serif);
+    font-size: 17px; font-weight: 700;
+    line-height: 1.25; color: var(--text); margin-bottom: 6px;
+  }
+
+  .feed-item-excerpt {
+    font-size: 13px; color: var(--muted);
+    line-height: 1.6; margin-bottom: 7px;
+  }
+
+  .feed-item-meta {
+    font-size: 9px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: #CCC;
+  }
+
+  .feed-thumb {
+    width: 120px; height: 80px;
+    background: #F0F0F0; border: 1px solid var(--border);
+    flex-shrink: 0; align-self: start;
+  }
+
+  /* Load more */
+  .load-more {
+    display: block; text-align: center;
+    padding: 18px; border: 1px solid var(--border);
+    font-size: 10px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--muted);
+    cursor: pointer; transition: all 0.2s; margin-top: 24px;
+  }
+  .load-more:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+
+  /* ── SIDEBAR ── */
+  .cat-sidebar { padding: 40px 0 48px 36px; }
+
+  .sidebar-block { margin-bottom: 36px; padding-bottom: 36px; border-bottom: 1px solid var(--border); }
+  .sidebar-block:last-child { border-bottom: none; }
+
+  .sidebar-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+
+  .newsletter-box { background: var(--dark); padding: 22px; border: 1px solid #2A2A2A; }
+  .newsletter-box h3 { font-family: var(--font-display); font-size: 20px; letter-spacing: 2px; color: #FFF; margin-bottom: 7px; }
+  .newsletter-box p { font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 14px; }
+  .newsletter-input { width: 100%; background: var(--black); border: 1px solid #333; color: #FFF; padding: 9px 12px; font-size: 12px; font-family: var(--font-body); margin-bottom: 8px; outline: none; }
+  .newsletter-input::placeholder { color: #555; }
+  .newsletter-btn { width: 100%; background: #FFF; color: var(--black); border: none; padding: 9px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
+
+  .sidebar-art { padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: opacity 0.2s; }
+  .sidebar-art:hover { opacity: 0.7; }
+  .sidebar-art:first-child { padding-top: 0; }
+  .sidebar-art:last-child { border-bottom: none; padding-bottom: 0; }
+  .sidebar-art-tag { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .sidebar-art-title { font-family: var(--font-serif); font-size: 13px; font-weight: 700; line-height: 1.3; color: var(--text); margin-bottom: 3px; }
+  .sidebar-art-date { font-size: 9px; color: #CCC; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* Focos in sidebar */
+  .foco-row { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; cursor: pointer; transition: opacity 0.2s; }
+  .foco-row:hover { opacity: 0.7; }
+  .foco-row:first-child { padding-top: 0; }
+  .foco-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .fdot-sm { width: 7px; height: 7px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+  .foco-row-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .foco-row-region { font-size: 9px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark); border-top: 2px solid var(--black); padding: 36px 48px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+  .footer-logo-text { font-family: var(--font-display); font-size: 26px; letter-spacing: 4px; color: #FFF; margin-bottom: 10px; }
+  .footer-catch { font-family: var(--font-serif); font-size: 12px; font-style: italic; color: #555; line-height: 1.5; }
+  .footer-col-title { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #555; margin-bottom: 14px; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { font-size: 13px; color: #AAA; transition: color 0.2s; }
+  .footer-links a:hover { color: #FFF; }
+  .footer-bottom { background: var(--dark); border-top: 1px solid #2A2A2A; padding: 14px 48px; display: flex; justify-content: space-between; }
+  .footer-copy { font-size: 10px; color: #444; letter-spacing: 1px; text-transform: uppercase; }
+  .footer-social { display: flex; gap: 20px; }
+  .footer-social a { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; transition: color 0.2s; }
+  .footer-social a:hover { color: #FFF; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .cat-header { animation: fadeUp 0.4s ease both; }
+  .cat-body   { animation: fadeUp 0.5s ease 0.1s both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="havoc_nosotros.html">Nosotros</a></li>
+    <li><a href="havoc_category_redes.html">Redes</a></li>
+    <li class="nav-dropdown-wrap">
+      <a href="#">Publicaciones</a>
+      <div class="nav-dropdown">
+        <a href="havoc_category.html">Análisis</a>
+        <a href="havoc_reflexion.html">Reflexión</a>
+        <a href="havoc_newsletter_v4.html">Newsletter</a>
+        <a href="havoc_category_redes.html">Redes</a>
+        <div class="nav-search-wrap">
+          <input class="nav-search-input" type="text" placeholder="Buscar...">
+          <button class="nav-search-btn">⌕</button>
+        </div>
+      </div>
+    </li>
+    <li class="nav-dropdown-wrap">
+      <a href="#">Estado del Mundo</a>
+      <div class="nav-dropdown">
+        <a href="havoc_focos_index.html">Focos de Tensión</a>
+        <a href="#">Tablero Global</a>
+      </div>
+    </li>
+  </ul>
+  <a href="#" class="nav-subscribe">Suscribirse</a>
+</nav>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-meta">
+    <span></span>
+    <span id="masthead-date"></span>
+  </div>
+  <img class="masthead-logo" src="images/havoc_logo.png" alt="HAVOC UNDR HEAVEN">
+  <div class="masthead-catchphrase">El nuevo orden mundial está aquí</div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <span><a href="#">Inicio</a></span>
+  <span class="sep">›</span>
+  <span class="current">Reflexión</span>
+</div>
+
+<!-- SECTION TABS — switch between categories -->
+<div class="section-tabs">
+  <a href="index.html" class="section-tab">Todo</a>
+  <a href="havoc_category.html" class="section-tab">Análisis</a>
+  <a href="havoc_reflexion.html" class="section-tab active">Reflexión</a>
+  <a href="havoc_newsletter_v4.html" class="section-tab">Newsletter</a>
+  <a href="havoc_focos_index.html" class="section-tab">Focos de Tensión</a>
+  <a href="havoc_tablero.html" class="section-tab">Tablero Global</a>
+</div>
+
+<!-- CATEGORY HEADER -->
+<div style="background:var(--white);border-bottom:1px solid var(--border);">
+<div class="cat-header">
+  <div>
+    <h1 class="cat-title">Reflexión</h1>
+    <p class="cat-desc">Ensayos de largo aliento sobre las grandes preguntas del orden mundial. No cubrimos noticias — cubrimos las ideas que explican por qué el mundo es como es. Historia, poder, civilización.</p>
+  </div>
+  <div class="cat-stats">
+    <div class="cat-stat-row">
+      <span class="cat-stat-label">Artículos publicados</span>
+      <span class="cat-stat-val">7</span>
+    </div>
+    <div class="cat-stat-row">
+      <span class="cat-stat-label">Más reciente</span>
+      <span class="cat-stat-val">28 Feb 2026</span>
+    </div>
+    <div class="cat-stat-row">
+      <span class="cat-stat-label">Frecuencia</span>
+      <span class="cat-stat-val">2–3 por mes</span>
+    </div>
+    <div class="cat-stat-row">
+      <span class="cat-stat-label">Extensión promedio</span>
+      <span class="cat-stat-val">1,800–3,000 palabras</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- TOPIC FILTER -->
+<div class="topic-filter">
+  <span class="topic-label">Filtrar por tema:</span>
+  <div class="topic-pill active">Todos</div>
+  <div class="topic-pill">China</div>
+  <div class="topic-pill">Estados Unidos</div>
+  <div class="topic-pill">Rusia</div>
+  <div class="topic-pill">Asia-Pacífico</div>
+  <div class="topic-pill">Medio Oriente</div>
+  <div class="topic-pill">América Latina</div>
+  <div class="topic-pill">Europa y Occidente</div>
+  <div class="topic-pill">BRICS</div>
+  <div class="topic-pill">México</div>
+  <div class="topic-pill">Geoeconomía</div>
+  <div class="topic-pill">Seguridad</div>
+  <div class="topic-pill">Tecnología</div>
+  <div class="topic-pill">Energía</div>
+  <div class="topic-pill">Comercio</div>
+  <div class="topic-pill">Diplomacia</div>
+</div>
+
+<!-- MAIN BODY -->
+<div class="cat-body">
+
+  <div class="cat-feed">
+
+    <!-- HERO ITEM -->
+    <div class="feed-hero">
+      <div class="feed-hero-image"></div>
+      <div class="feed-hero-eyebrow">
+        <span class="cat-tag">Reflexión</span>
+        <span class="topic-tag">Civilización · Orden Mundial</span>
+      </div>
+      <h2 class="feed-hero-title">El fin del mundo que construimos</h2>
+      <p class="feed-hero-deck">Durante setenta años Occidente creyó que la interdependencia económica garantizaba la paz. Esa hipótesis está siendo falsificada en tiempo real — y nadie tiene un plan B.</p>
+      <div class="feed-hero-meta">
+        <span>28 Feb 2026</span>
+        <span>8 min de lectura</span>
+      </div>
+    </div>
+
+    <!-- STANDARD ITEMS -->
+    <div class="feed-item">
+      <div>
+        <div class="feed-item-eyebrow"><span class="cat-tag">Reflexión</span><span class="topic-tag">Ucrania · OTAN</span></div>
+        <div class="feed-item-title">La equivocación de Occidente con Ucrania</div>
+        <div class="feed-item-excerpt">La expansión de la OTAN hacia el este no fue el único error. Fue la incapacidad de entender que Rusia nunca dejó de ser un Estado civilización con intereses existenciales en su frontera.</div>
+        <div class="feed-item-meta">22 Feb 2026 · 11 min</div>
+      </div>
+      <div class="feed-thumb"></div>
+    </div>
+
+    <div class="feed-item">
+      <div>
+        <div class="feed-item-eyebrow"><span class="cat-tag">Reflexión</span><span class="topic-tag">China · Civilización</span></div>
+        <div class="feed-item-title">China no quiere ser Occidente: quiere reemplazarlo</div>
+        <div class="feed-item-excerpt">La narrativa de que China busca integración al orden liberal siempre fue una proyección occidental. Beijing tiene su propio modelo de orden mundial — y lo está exportando.</div>
+        <div class="feed-item-meta">14 Feb 2026 · 12 min</div>
+      </div>
+      <div class="feed-thumb"></div>
+    </div>
+
+    <div class="feed-item">
+      <div>
+        <div class="feed-item-eyebrow"><span class="cat-tag">Reflexión</span><span class="topic-tag">Sur Global · Historia</span></div>
+        <div class="feed-item-title">El Sur Global no existe — pero cambia todo</div>
+        <div class="feed-item-excerpt">Es una categoría política, no geográfica. Y eso es exactamente lo que le da poder: la capacidad de articular un resentimiento histórico común sin comprometerse a nada concreto.</div>
+        <div class="feed-item-meta">5 Feb 2026 · 9 min</div>
+      </div>
+      <div class="feed-thumb"></div>
+    </div>
+
+    <div class="feed-item">
+      <div>
+        <div class="feed-item-eyebrow"><span class="cat-tag">Reflexión</span><span class="topic-tag">Estados Unidos · Decadencia</span></div>
+        <div class="feed-item-title">La República Imperial y el costo de su propia doctrina</div>
+        <div class="feed-item-excerpt">Estados Unidos construyó un orden mundial basado en reglas que sólo aplica cuando le conviene. La erosión de su credibilidad no comenzó con Trump — comenzó en Bagdad.</div>
+        <div class="feed-item-meta">28 Ene 2026 · 13 min</div>
+      </div>
+      <div class="feed-thumb"></div>
+    </div>
+
+    <div class="feed-item">
+      <div>
+        <div class="feed-item-eyebrow"><span class="cat-tag">Reflexión</span><span class="topic-tag">Historia · Geopolítica</span></div>
+        <div class="feed-item-title">Kissinger tenía razón en lo que nadie quiso escuchar</div>
+        <div class="feed-item-excerpt">Su legado es incómodo porque mezcla brillantez analítica con inmoralidad operacional. Pero su diagnóstico sobre el poder y la multipolaridad fue preciso. Releerlo hoy es urgente.</div>
+        <div class="feed-item-meta">20 Ene 2026 · 10 min</div>
+      </div>
+      <div class="feed-thumb"></div>
+    </div>
+
+    <div class="load-more">Cargar más artículos</div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="cat-sidebar">
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Newsletter Semanal</div>
+      <div class="newsletter-box">
+        <h3>HAVOC DISPATCH</h3>
+        <p>Análisis geopolítico directo a tu correo cada semana.</p>
+        <input class="newsletter-input" type="email" placeholder="tu@correo.com">
+        <button class="newsletter-btn">Suscribirse</button>
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">En Análisis</div>
+      <div class="sidebar-art">
+        <div class="sidebar-art-tag">China · Semiconductores</div>
+        <div class="sidebar-art-title">La guerra de los semiconductores no es sobre chips</div>
+        <div class="sidebar-art-date">22 Feb 2026</div>
+      </div>
+      <div class="sidebar-art">
+        <div class="sidebar-art-tag">India · Estrategia</div>
+        <div class="sidebar-art-title">La no alineación como modelo de negocio</div>
+        <div class="sidebar-art-date">10 Feb 2026</div>
+      </div>
+      <div class="sidebar-art">
+        <div class="sidebar-art-tag">Medio Oriente · Geoeconomía</div>
+        <div class="sidebar-art-title">Arabia Saudita, el yuan y el fin del petrodólar</div>
+        <div class="sidebar-art-date">1 Feb 2026</div>
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Focos de Tensión</div>
+      <div class="foco-row">
+        <div class="fdot-sm" style="background:#CC2200;"></div>
+        <div><div class="foco-row-name">Ucrania — Frente Activo</div><div class="foco-row-region">Europa del Este</div></div>
+      </div>
+      <div class="foco-row">
+        <div class="fdot-sm" style="background:#E07800;"></div>
+        <div><div class="foco-row-name">Estrecho de Taiwán</div><div class="foco-row-region">Indo-Pacífico</div></div>
+      </div>
+      <div class="foco-row">
+        <div class="fdot-sm" style="background:#CC2200;"></div>
+        <div><div class="foco-row-name">Reconfiguración Post-Gaza</div><div class="foco-row-region">Medio Oriente</div></div>
+      </div>
+      <div class="foco-row">
+        <div class="fdot-sm" style="background:#336699;"></div>
+        <div><div class="foco-row-name">Desdolarización Global</div><div class="foco-row-region">Global · Geoeconomía</div></div>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo-text">HAVOC UNDR HEAVEN</div>
+    <div class="footer-catch">El nuevo orden mundial está aquí.<br>Nosotros lo explicamos.</div>
+  </div>
+  <div>
+    <div class="footer-col-title">Secciones</div>
+    <ul class="footer-links">
+      <li><a href="havoc_category.html">Análisis</a></li>
+      <li><a href="havoc_reflexion.html">Reflexión</a></li>
+      <li><a href="havoc_newsletter_v4.html">Newsletter</a></li>
+      <li><a href="havoc_focos_index.html">Focos de Tensión</a></li>
+      <li><a href="havoc_tablero.html">Tablero Global</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Acerca De</div>
+    <ul class="footer-links">
+      <li><a href="havoc_nosotros.html">Nosotros</a></li>
+      <li><a href="havoc_category_redes.html">Redes</a></li>
+      <li><a href="#">Contacto</a></li>
+      <li><a href="#">Suscribirse</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2026 Havoc Undr Heaven · Todos los derechos reservados</span>
+  <div class="footer-social"><a href="#">Instagram</a><a href="#">Spotify</a><a href="#">Newsletter</a></div>
+</div>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2026 Havoc Undr Heaven · Todos los derechos reservados</span>
+  <div class="footer-social"><a href="#">Instagram</a><a href="#">Spotify</a><a href="#">Newsletter</a></div>
+</div>
+
+<script>
+  document.getElementById('masthead-date').textContent =
+    new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.querySelectorAll('.nav-dropdown-wrap > a').forEach(function(trigger) {
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      var wrap = this.parentElement;
+      var isOpen = wrap.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown-wrap').forEach(function(w) { w.classList.remove('open'); });
+      if (!isOpen) wrap.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-dropdown-wrap')) {
+      document.querySelectorAll('.nav-dropdown-wrap').forEach(function(w) { w.classList.remove('open'); });
+    }
+  });
+
+  document.querySelectorAll('.topic-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.topic-pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
