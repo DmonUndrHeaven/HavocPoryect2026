@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temas — HAVOC UNDR HEAVEN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500&display=swap');
+  :root {
+    --black:#0A0A0A; --dark:#1A1A1A; --border:#E0E0E0; --muted:#999; --mid:#555;
+    --text:#1A1A1A; --white:#FFFFFF; --off:#F7F7F5;
+    --font-display:'Bebas Neue',Impact,sans-serif;
+    --font-serif:'Playfair Display',Georgia,serif;
+    --font-body:'Inter',sans-serif;
+    --font-cond:'Oswald',sans-serif;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  body{background:#FFF;color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+
+  nav{position:sticky;top:0;z-index:100;background:var(--black);border-bottom:1px solid #2A2A2A;padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:52px}
+  .nav-links{display:flex;gap:28px;list-style:none}
+  .nav-links a{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#888;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:#FFF}
+  .nav-dropdown-wrap{position:relative}
+  .nav-dropdown-wrap>a::after{content:' ▾';font-size:7px;opacity:.5}
+  .nav-dropdown{display:none;position:absolute;top:52px;left:0;background:var(--black);border:1px solid #2A2A2A;border-top:none;min-width:180px;z-index:200}
+  .nav-dropdown-wrap.open .nav-dropdown{display:block}
+  .nav-dropdown a{display:block;padding:12px 18px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;border-bottom:1px solid #1E1E1E;transition:color .2s}
+  .nav-dropdown a:hover{color:#FFF}
+  .nav-dropdown a:last-child{border-bottom:none}
+  .nav-search-wrap{display:flex;align-items:center;gap:0;padding:10px 14px;border-bottom:1px solid #1E1E1E}
+  .nav-search-input{background:transparent;border:none;outline:none;color:#888;font-size:10px;letter-spacing:1.5px;font-family:var(--font-body);width:128px;text-transform:uppercase}
+  .nav-search-input::placeholder{color:#333}
+  .nav-search-input:focus{color:#FFF}
+  .nav-search-btn{background:none;border:none;cursor:pointer;color:#444;font-size:11px;padding:0 0 0 6px;transition:color .2s;line-height:1}
+  .nav-search-btn:hover{color:#FFF}
+  .nav-subscribe{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:#FFF;border:1px solid #444;padding:7px 18px;transition:all .2s}
+  .nav-subscribe:hover{background:#FFF;color:var(--black)}
+
+  .masthead{background:var(--black);padding:28px 48px 22px;text-align:center;border-bottom:2px solid #2A2A2A}
+  .masthead-meta{display:flex;justify-content:flex-end;margin-bottom:20px}
+  .masthead-meta span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555}
+  .masthead-logo{width: 620px;filter:none;display:block;margin:0 auto}
+  .masthead-catchphrase{font-family: var(--font-body);font-size: 14px;font-weight: 600;letter-spacing: 6px;text-transform:uppercase;color:#FFF;margin-top:14px}
+
+  .breadcrumb{padding:12px 48px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center}
+  .breadcrumb span{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+  .breadcrumb .sep{color:var(--border)}
+  .breadcrumb .current{color:var(--text);font-weight:600}
+
+  .type-bar{border-bottom:2px solid var(--text);padding:0;display:flex;background:var(--white);position:sticky;top:52px;z-index:90}
+  .type-item{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);padding:14px 0;border-right:1px solid var(--border);border-left:1px solid var(--border);cursor:pointer;transition:all .2s;font-weight:600;position:relative;text-decoration:none;display:flex;align-items:center;justify-content:center;flex:1;text-align:center}
+  .type-item + .type-item{border-left:none}
+  .type-item:hover{color:var(--text)}
+  .type-bar-search{margin-left:auto;display:flex;align-items:center;gap:0;padding:0 0 0 20px;border-left:1px solid var(--border)}
+  .type-bar-search input{background:transparent;border:none;outline:none;color:var(--text);font-size:10px;letter-spacing:1.5px;font-family:var(--font-body);width:140px;text-transform:uppercase;padding:0}
+  .type-bar-search input::placeholder{color:var(--muted)}
+  .type-bar-search button{background:none;border:none;cursor:pointer;color:var(--muted);font-size:14px;padding:0 0 0 8px;transition:color .2s;line-height:1}
+  .type-bar-search button:hover{color:var(--text)}
+
+  .region-bar{border-bottom:1px solid var(--border);padding:0 48px;display:flex;overflow-x:auto;background:var(--off);scrollbar-width:none}
+  .region-bar::-webkit-scrollbar{display:none}
+  .region-item{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;color:var(--muted);padding:11px 16px;border-right:1px solid var(--border);white-space:nowrap;cursor:pointer;transition:color .2s;text-decoration:none;display:inline-block}
+  .region-item:first-child{padding-left:0;font-size:10px;letter-spacing:3px;color:var(--text);pointer-events:none}
+  .region-item:hover{color:var(--text)}
+  .region-item.active{color:var(--text);font-weight:700;position:relative}
+  .region-item.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--text)}
+
+  .tema-header{padding:48px 48px 40px;border-bottom:1px solid var(--border);max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 280px;gap:56px;align-items:end}
+  .tema-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .tema-title{font-family:var(--font-display);font-size:80px;letter-spacing:4px;color:var(--text);line-height:.9;margin-bottom:16px}
+  .tema-desc{font-family:var(--font-serif);font-size:15px;font-style:italic;color:var(--mid);line-height:1.65;padding-top:18px;border-top:1px solid var(--border);max-width:520px}
+  .tema-stats{display:flex;flex-direction:column;border:1px solid var(--border)}
+  .tema-stat{display:flex;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border)}
+  .tema-stat:last-child{border-bottom:none}
+  .tema-stat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+  .tema-stat-val{font-size:13px;font-weight:700;color:var(--text)}
+
+  .related-bar{padding:14px 48px;border-bottom:1px solid var(--border);background:var(--off);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .related-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-right:4px;flex-shrink:0}
+  .related-pill{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:5px 12px;background:var(--white);transition:all .2s;cursor:pointer}
+  .related-pill:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+
+  .tema-body{max-width:1200px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 300px;gap:0}
+
+  .tema-feed{border-right:1px solid var(--border);padding:40px 56px 48px 0}
+  .feed-filter-row{display:flex;gap:12px;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .feed-filter{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:5px 14px;border:1px solid var(--border);cursor:pointer;transition:all .2s;background:var(--white)}
+  .feed-filter.active,.feed-filter:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+
+  .feed-hero{padding-bottom:28px;border-bottom:2px solid var(--text);margin-bottom:28px;cursor:pointer;transition:opacity .2s}
+  .feed-hero:hover{opacity:.85}
+  .feed-hero-img{width:100%;height:260px;background:#F0F0F0;border:1px solid var(--border);margin-bottom:18px;display:flex;align-items:center;justify-content:center}
+  .feed-hero-img::after{content:'IMAGEN';font-size:9px;letter-spacing:3px;color:#CCC}
+  .feed-eyebrow{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+  .cat-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--white);background:var(--black);padding:3px 10px}
+  .topic-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+  .feed-hero-title{font-family:var(--font-serif);font-size:30px;font-weight:900;line-height:1.1;color:var(--text);margin-bottom:10px}
+  .feed-hero-deck{font-family:var(--font-serif);font-size:15px;font-style:italic;color:var(--mid);line-height:1.55;margin-bottom:12px}
+  .feed-hero-meta{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:flex;gap:14px}
+
+  .feed-item{padding:20px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 110px;gap:16px;cursor:pointer;transition:opacity .2s}
+  .feed-item:hover{opacity:.7}
+  .feed-item:last-child{border-bottom:none}
+  .feed-item-title{font-family:var(--font-serif);font-size:17px;font-weight:700;line-height:1.25;color:var(--text);margin-bottom:6px}
+  .feed-item-excerpt{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:6px}
+  .feed-item-meta{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#CCC}
+  .feed-thumb{width:110px;height:74px;background:#F0F0F0;border:1px solid var(--border);align-self:start}
+
+  .load-more{display:block;text-align:center;padding:16px;border:1px solid var(--border);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;margin-top:24px}
+  .load-more:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+
+  .tema-sidebar{padding:40px 0 48px 36px}
+  .sidebar-block{margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+  .sidebar-block:last-child{border-bottom:none}
+  .sidebar-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  .newsletter-box{background:var(--dark);padding:20px}
+  .newsletter-box h3{font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:#FFF;margin-bottom:6px}
+  .newsletter-box p{font-size:12px;color:#888;line-height:1.6;margin-bottom:12px}
+  .newsletter-input{width:100%;background:var(--black);border:1px solid #333;color:#FFF;padding:8px 12px;font-size:12px;font-family:var(--font-body);margin-bottom:8px;outline:none}
+  .newsletter-input::placeholder{color:#555}
+  .newsletter-btn{width:100%;background:#FFF;color:var(--black);border:none;padding:9px;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;cursor:pointer;font-family:var(--font-body)}
+  .sidebar-art{padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .2s}
+  .sidebar-art:hover{opacity:.7}
+  .sidebar-art:first-child{padding-top:0}
+  .sidebar-art:last-child{border-bottom:none;padding-bottom:0}
+  .sidebar-art-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+  .sidebar-art-title{font-family:var(--font-serif);font-size:13px;font-weight:700;line-height:1.3;color:var(--text);margin-bottom:2px}
+  .sidebar-art-date{font-size:9px;color:#CCC;letter-spacing:1px;text-transform:uppercase}
+  .foco-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);align-items:flex-start;cursor:pointer;transition:opacity .2s}
+  .foco-row:hover{opacity:.7}
+  .foco-row:first-child{padding-top:0}
+  .foco-row:last-child{border-bottom:none;padding-bottom:0}
+  .fdot-sm{width:7px;height:7px;border-radius:50%;margin-top:3px;flex-shrink:0}
+  .foco-row-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+  .foco-row-region{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+
+  footer{background:var(--dark);border-top:2px solid var(--black);padding:36px 48px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px}
+  .footer-logo-text{font-family:var(--font-display);font-size:26px;letter-spacing:4px;color:#FFF;margin-bottom:10px}
+  .footer-catch{font-family:var(--font-serif);font-size:12px;font-style:italic;color:#555;line-height:1.5}
+  .footer-col-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#555;margin-bottom:14px}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .footer-links a{font-size:13px;color:#AAA;transition:color .2s}
+  .footer-links a:hover{color:#FFF}
+  .footer-bottom{background:var(--dark);border-top:1px solid #2A2A2A;padding:14px 48px;display:flex;justify-content:space-between}
+  .footer-copy{font-size:10px;color:#444;letter-spacing:1px;text-transform:uppercase}
+  .footer-social{display:flex;gap:20px}
+  .footer-social a{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;transition:color .2s}
+  .footer-social a:hover{color:#FFF}
+</style>
+</head>
+<body>
+
+<nav>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="havoc_nosotros.html">Nosotros</a></li>
+    <li><a href="havoc_category_redes.html">Redes</a></li>
+    <li class="nav-dropdown-wrap">
+      <a href="#">Publicaciones</a>
+      <div class="nav-dropdown">
+        <a href="havoc_category.html">Análisis</a>
+        <a href="havoc_reflexion.html">Reflexión</a>
+        <a href="havoc_newsletter_v4.html">Newsletter</a>
+        <a href="havoc_category_redes.html">Redes</a>
+        <div class="nav-search-wrap">
+          <input class="nav-search-input" type="text" placeholder="Buscar...">
+          <button class="nav-search-btn">⌕</button>
+        </div>
+      </div>
+    </li>
+    <li class="nav-dropdown-wrap">
+      <a href="#">Estado del Mundo</a>
+      <div class="nav-dropdown">
+        <a href="havoc_focos_index.html">Focos de Tensión</a>
+        <a href="#">Tablero Global</a>
+      </div>
+    </li>
+  </ul>
+  <a href="#" class="nav-subscribe">Suscribirse</a>
+</nav>
+
+<div class="masthead">
+    <div class="masthead-meta">
+    <span></span>
+    <span id="masthead-date"></span>
+  </div>
+  <img class="masthead-logo" src="images/havoc_logo.png" alt="HAVOC UNDR HEAVEN">
+  <div class="masthead-catchphrase">El nuevo orden mundial está aquí</div>
+</div>
+
+<div class="breadcrumb">
+  <span><a href="index.html">Inicio</a></span>
+  <span class="sep">›</span>
+  <span>Temas</span>
+  <span class="sep">›</span>
+  <span class="current" id="bc-current">—</span>
+</div>
+
+<div class="type-bar">
+  <a href="index.html" class="type-item">Todo</a>
+  <a href="havoc_category.html" class="type-item">Análisis</a>
+  <a href="havoc_reflexion.html" class="type-item">Reflexión</a>
+  <a href="havoc_newsletter_v4.html" class="type-item">Newsletter</a>
+  <a href="havoc_focos_index.html" class="type-item">Focos de Tensión</a>
+  <a href="havoc_tablero.html" class="type-item">Tablero Global</a>
+</div>
+
+<div class="region-bar" id="region-bar">
+  <span class="region-item">Temas</span>
+  <a href="havoc_tema.html?tema=china" class="region-item" data-tema="china">China</a>
+  <a href="havoc_tema.html?tema=estados-unidos" class="region-item" data-tema="estados-unidos">Estados Unidos</a>
+  <a href="havoc_tema.html?tema=rusia" class="region-item" data-tema="rusia">Rusia</a>
+  <a href="havoc_tema.html?tema=asia-pacifico" class="region-item" data-tema="asia-pacifico">Asia-Pacífico</a>
+  <a href="havoc_tema.html?tema=medio-oriente" class="region-item" data-tema="medio-oriente">Medio Oriente</a>
+  <a href="havoc_tema.html?tema=america-latina" class="region-item" data-tema="america-latina">América Latina</a>
+  <a href="havoc_tema.html?tema=europa" class="region-item" data-tema="europa">Europa y Occidente</a>
+  <a href="havoc_tema.html?tema=brics" class="region-item" data-tema="brics">BRICS</a>
+  <a href="havoc_tema.html?tema=mexico" class="region-item" data-tema="mexico">México</a>
+  <a href="havoc_tema.html?tema=geoeconomia" class="region-item" data-tema="geoeconomia">Geoeconomía</a>
+  <a href="havoc_tema.html?tema=seguridad" class="region-item" data-tema="seguridad">Seguridad</a>
+  <a href="havoc_tema.html?tema=tecnologia" class="region-item" data-tema="tecnologia">Tecnología</a>
+  <a href="havoc_tema.html?tema=energia" class="region-item" data-tema="energia">Energía y Medio Ambiente</a>
+  <a href="havoc_tema.html?tema=comercio" class="region-item" data-tema="comercio">Comercio</a>
+  <a href="havoc_tema.html?tema=gobierno" class="region-item" data-tema="gobierno">Gobierno</a>
+  <a href="havoc_tema.html?tema=diplomacia" class="region-item" data-tema="diplomacia">Relaciones Internacionales y Diplomacia</a>
+  <a href="havoc_tema.html?tema=mundo" class="region-item" data-tema="mundo">Mundo</a>
+</div>
+
+<div style="border-bottom:1px solid var(--border);">
+  <div class="tema-header">
+    <div>
+      <div class="tema-eyebrow">Archivo por tema</div>
+      <h1 class="tema-title" id="tema-title">—</h1>
+      <p class="tema-desc" id="tema-desc"></p>
+    </div>
+    <div class="tema-stats">
+      <div class="tema-stat">
+        <span class="tema-stat-label">Artículos publicados</span>
+        <span class="tema-stat-val" id="tema-count">—</span>
+      </div>
+      <div class="tema-stat">
+        <span class="tema-stat-label">Más reciente</span>
+        <span class="tema-stat-val" id="tema-latest">—</span>
+      </div>
+      <div class="tema-stat">
+        <span class="tema-stat-label">Secciones</span>
+        <span class="tema-stat-val" id="tema-sections">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="related-bar">
+  <span class="related-label">Temas relacionados:</span>
+  <div id="related-pills"></div>
+</div>
+
+<div class="tema-body">
+  <div class="tema-feed">
+    <div class="feed-filter-row">
+      <div class="feed-filter active">Todo</div>
+      <div class="feed-filter">Análisis</div>
+      <div class="feed-filter">Reflexión</div>
+      <div class="feed-filter">Newsletter</div>
+    </div>
+    <div id="feed-hero-slot"></div>
+    <div id="feed-items-slot"></div>
+    <div class="load-more">Cargar más artículos</div>
+  </div>
+
+  <aside class="tema-sidebar">
+    <div class="sidebar-block">
+      <div class="sidebar-label">Newsletter Semanal</div>
+      <div class="newsletter-box">
+        <h3>HAVOC DISPATCH</h3>
+        <p>Análisis geopolítico directo a tu correo cada semana.</p>
+        <input class="newsletter-input" type="email" placeholder="tu@correo.com">
+        <button class="newsletter-btn">Suscribirse</button>
+      </div>
+    </div>
+    <div class="sidebar-block">
+      <div class="sidebar-label">También en HUH</div>
+      <div id="sidebar-related"></div>
+    </div>
+    <div class="sidebar-block">
+      <div class="sidebar-label">Focos de Tensión</div>
+      <div id="sidebar-focos"></div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <div>
+    <div class="footer-logo-text">HAVOC UNDR HEAVEN</div>
+    <div class="footer-catch">El nuevo orden mundial está aquí.<br>Nosotros lo explicamos.</div>
+  </div>
+  <div>
+    <div class="footer-col-title">Secciones</div>
+    <ul class="footer-links">
+      <li><a href="havoc_category.html">Análisis</a></li>
+      <li><a href="havoc_reflexion.html">Reflexión</a></li>
+      <li><a href="havoc_newsletter_v4.html">Newsletter</a></li>
+      <li><a href="havoc_focos_index.html">Focos de Tensión</a></li>
+      <li><a href="havoc_tablero.html">Tablero Global</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Acerca De</div>
+    <ul class="footer-links">
+      <li><a href="havoc_nosotros.html">Nosotros</a></li>
+      <li><a href="havoc_category_redes.html">Redes</a></li>
+      <li><a href="#">Contacto</a></li>
+      <li><a href="#">Suscribirse</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2026 Havoc Undr Heaven · Todos los derechos reservados</span>
+  <div class="footer-social"><a href="#">Instagram</a><a href="#">Spotify</a><a href="#">Newsletter</a></div>
+</div>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2026 Havoc Undr Heaven · Todos los derechos reservados</span>
+  <div class="footer-social"><a href="#">Instagram</a><a href="#">Spotify</a><a href="#">Newsletter</a></div>
+</div>
+
+<script>
+  document.getElementById('masthead-date').textContent =
+    new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.querySelectorAll('.nav-dropdown-wrap > a').forEach(function(trigger) {
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      var wrap = this.parentElement;
+      var isOpen = wrap.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown-wrap').forEach(function(w) { w.classList.remove('open'); });
+      if (!isOpen) wrap.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-dropdown-wrap')) {
+      document.querySelectorAll('.nav-dropdown-wrap').forEach(function(w) { w.classList.remove('open'); });
+    }
+  });
+
+  // ── TEMA DATA ──
+const TEMAS = {
+  'china': {
+    label: 'China',
+    desc: 'Todo lo publicado sobre China — su ascenso como hegemon, su modelo político, su estrategia económica y su papel central en el nuevo orden mundial.',
+    count: 14, latest: '28 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['Asia-Pacífico','Tecnología','Geoeconomía','BRICS','Estados Unidos','Comercio'],
+    focos: [{name:'Estrecho de Taiwán',region:'Indo-Pacífico',color:'#E07800'},{name:'Mar del Sur de China',region:'ASEAN',color:'#E07800'},{name:'Expansión BRICS+',region:'Global',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'China · Tecnología · Estados Unidos', title:'La guerra de los semiconductores no es sobre chips', deck:'Los controles de exportación de Washington son el primer movimiento de una campaña más profunda — sobre quién define la arquitectura de la próxima era industrial.', date:'28 Feb 2026', time:'8 min' },
+    articles: [
+      { cat:'Análisis', tags:'China · BRI', title:'Cómo la Ruta de la Seda compra lealtad política', excerpt:'La Iniciativa del Cinturón y la Ruta no es un proyecto de desarrollo. Es la infraestructura política del orden chino en construcción.', date:'22 Feb 2026', time:'8 min' },
+      { cat:'Análisis', tags:'China · PCC', title:'Las falacias de la "dictadura china": la meritocracia del PCC', excerpt:'El sistema político chino es incomprendido en Occidente. Ni dictadura personal ni democracia liberal — algo más complejo y más estable.', date:'15 Feb 2026', time:'10 min' },
+      { cat:'Reflexión', tags:'China · Civilización', title:'El propósito chino: Zhōng Mèng y Xi Jinping', excerpt:'El Sueño Chino no es una consigna vacía. Es la articulación de un proyecto civilizacional con siglos de historia detrás.', date:'8 Feb 2026', time:'9 min' },
+      { cat:'Análisis', tags:'China · Taiwán', title:'China y Taiwán: ¿hay lugar para la reunificación?', excerpt:'Beijing no ha renunciado a Taiwán. La pregunta es cuándo y cómo — no si. Las variables apuntan a una ventana entre 2027 y 2035.', date:'1 Feb 2026', time:'11 min' },
+    ],
+    sidebar: [
+      { tags:'Geoeconomía · Dólar', title:'Arabia Saudita, el yuan y el fin del petrodólar', date:'15 Feb 2026' },
+      { tags:'India · Estrategia', title:'La no alineación como modelo de negocio', date:'19 Feb 2026' },
+      { tags:'BRICS · Sur Global', title:'Expansión BRICS+: ¿cohesión o fragmentación?', date:'10 Feb 2026' },
+    ]
+  },
+  'estados-unidos': {
+    label: 'Estados Unidos',
+    desc: 'El análisis del Imperio Americano en declive — su política exterior, su tecnonacionalismo, sus contradicciones internas y su reconfiguración en un mundo que ya no le pertenece.',
+    count: 11, latest: '25 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['China','OTAN','Geoeconomía','Tecnología','América Latina','Seguridad'],
+    focos: [{name:'Rearmamento Europeo',region:'Europa · OTAN',color:'#E07800'},{name:'Estrecho de Taiwán',region:'Indo-Pacífico',color:'#E07800'}],
+    hero: { cat:'Análisis', tags:'Estados Unidos · Hegemonía', title:'El Imperio Americano en decadencia', deck:'El unipolarismo no terminó con una derrota militar. Terminó con la acumulación silenciosa de alternativas — económicas, diplomáticas e institucionales — que Washington no supo ver venir.', date:'25 Feb 2026', time:'12 min' },
+    articles: [
+      { cat:'Análisis', tags:'EEUU · Tecnología', title:'Estados Unidos y el crecimiento del Tecnonacionalismo', excerpt:'Washington ya no separa economía de seguridad nacional. Cada chip, cada cable submarino, cada algoritmo es ahora un activo estratégico.', date:'18 Feb 2026', time:'9 min' },
+      { cat:'Reflexión', tags:'EEUU · OTAN · Ucrania', title:'La equivocación de Occidente con Ucrania', excerpt:'Occidente ganó el argumento moral pero perdió el cálculo estratégico. La guerra de desgaste no debilita a Rusia tanto como fragmenta a Europa.', date:'10 Feb 2026', time:'10 min' },
+      { cat:'Análisis', tags:'EEUU · Dólar · Hegemonía', title:'La desdolarización del mundo', excerpt:'El dólar no será reemplazado mañana. Pero la arquitectura financiera que lo sostiene se está erosionando sistemáticamente desde múltiples frentes.', date:'2 Feb 2026', time:'11 min' },
+    ],
+    sidebar: [
+      { tags:'China · Tecnología', title:'La guerra de los semiconductores no es sobre chips', date:'28 Feb 2026' },
+      { tags:'Europa · OTAN', title:'Rearmamento europeo: el fin de la dependencia', date:'20 Feb 2026' },
+      { tags:'Geoeconomía', title:'Arabia Saudita, el yuan y el fin del petrodólar', date:'15 Feb 2026' },
+    ]
+  },
+  'rusia': {
+    label: 'Rusia',
+    desc: 'Rusia como potencia disruptiva del orden liberal — su doctrina estratégica, su economía de guerra, su proyección en África y su alianza táctica con China.',
+    count: 8, latest: '20 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['Ucrania','Europa','China','África','Energía','Seguridad'],
+    focos: [{name:'Ucrania — Frente de Guerra',region:'Europa del Este',color:'#CC2200'},{name:'Sahel',region:'África Occidental',color:'#E07800'}],
+    hero: { cat:'Análisis', tags:'Rusia · Economía · Sanciones', title:'La guerra silenciosa del rublo', deck:'A pesar de las sanciones, el superávit comercial ruso se mantiene redirigido a través de los Emiratos, Turquía e India. El cerco financiero tiene fugas.', date:'20 Feb 2026', time:'7 min' },
+    articles: [
+      { cat:'Reflexión', tags:'Rusia · OTAN · Ucrania', title:'La equivocación de Occidente con Ucrania', excerpt:'Occidente ganó el argumento moral pero perdió el cálculo estratégico. La guerra de desgaste no debilita a Rusia tanto como fragmenta a Europa.', date:'10 Feb 2026', time:'10 min' },
+      { cat:'Análisis', tags:'Rusia · África · Sahel', title:'El giro deliberado del Sahel', excerpt:'La retirada francesa del Sahel no fue un accidente. Fue el resultado de décadas de resentimiento y la oferta rusa llegó en el momento preciso.', date:'5 Feb 2026', time:'8 min' },
+    ],
+    sidebar: [
+      { tags:'Europa · OTAN', title:'Rearmamento europeo: el fin de la dependencia', date:'20 Feb 2026' },
+      { tags:'China · Rusia · BRICS', title:'El eje sino-ruso: ¿alianza o conveniencia?', date:'12 Feb 2026' },
+    ]
+  },
+  'asia-pacifico': {
+    label: 'Asia-Pacífico',
+    desc: 'El epicentro del siglo XXI — las rivalidades navales, la carrera tecnológica, el ascenso del ASEAN y la reconfiguración del orden regional entre China, EEUU, Japón e India.',
+    count: 9, latest: '22 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['China','India','ASEAN','Seguridad','Comercio','Tecnología'],
+    focos: [{name:'Estrecho de Taiwán',region:'Indo-Pacífico',color:'#E07800'},{name:'Mar del Sur de China',region:'ASEAN',color:'#E07800'},{name:'Corea del Norte',region:'Corea',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'Asia-Pacífico · ASEAN · Comercio', title:'ASEAN vs la Unión Europea: dos modelos de integración', deck:'El ASEAN rechaza la integración profunda y apuesta por la soberanía compartida. La UE hizo lo contrario. En un mundo de grandes potencias en competencia, ¿cuál modelo sobrevive mejor?', date:'22 Feb 2026', time:'9 min' },
+    articles: [
+      { cat:'Análisis', tags:'APEC · Asia-Pacífico', title:'APEC: el futuro del Asia-Pacífico', excerpt:'El foro económico más importante del mundo define las reglas del comercio del siglo XXI. China y EEUU se disputan su dirección.', date:'15 Feb 2026', time:'8 min' },
+      { cat:'Reflexión', tags:'Corea del Norte · Diplomacia', title:'Corea del Norte se comienza a abrir al mundo', excerpt:'Pyongyang está probando canales discretos. La apertura, si llega, será controlada, gradual y condicionada a garantías de supervivencia del régimen.', date:'8 Feb 2026', time:'7 min' },
+    ],
+    sidebar: [
+      { tags:'China · Taiwán', title:'China y Taiwán: ¿hay lugar para la reunificación?', date:'1 Feb 2026' },
+      { tags:'India · Estrategia', title:'India: el tercer actor del nuevo orden', date:'20 Ene 2026' },
+    ]
+  },
+  'medio-oriente': {
+    label: 'Medio Oriente',
+    desc: 'La región más volátil del mundo — el reordenamiento post-Gaza, la rivalidad Irán-Arabia Saudita, la desdolarización del petróleo y el fin del orden americano en la región.',
+    count: 7, latest: '28 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['Energía','Geoeconomía','Seguridad','Estados Unidos','China','Diplomacia'],
+    focos: [{name:'Reconfiguración Post-Gaza',region:'Medio Oriente',color:'#CC2200'}],
+    hero: { cat:'Análisis', tags:'Medio Oriente · Geoeconomía', title:'Arabia Saudita, el yuan y el fin del petrodólar', deck:'Las conversaciones discretas entre Riad y Beijing para facturar petróleo en yuanes aceleran. El sistema financiero del siglo XX tiene fecha de caducidad.', date:'28 Feb 2026', time:'9 min' },
+    articles: [
+      { cat:'Análisis', tags:'Medio Oriente · Diplomacia', title:'El reordenamiento de alianzas post-Gaza', excerpt:'La normalización árabe-israelí está estancada pero los cálculos en Riad han cambiado permanentemente. El eje de poder regional se reconfigura.', date:'15 Feb 2026', time:'10 min' },
+    ],
+    sidebar: [
+      { tags:'Energía · Petroestados', title:'Electroestados vs Petroestados', date:'10 Feb 2026' },
+      { tags:'Geoeconomía · Dólar', title:'La desdolarización del mundo', date:'2 Feb 2026' },
+    ]
+  },
+  'america-latina': {
+    label: 'América Latina',
+    desc: 'La región más cercana y más ignorada — su posición en la contra-globalización, la estrategia de México, los conectores regionales y la competencia sino-americana en el patio trasero.',
+    count: 6, latest: '18 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['México','China','Estados Unidos','Geoeconomía','Comercio','BRICS'],
+    focos: [{name:'Expansión BRICS+',region:'Global · Sur Global',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'América Latina · México · Geopolítica', title:'Las estrategias de México en la Contra-Globalización', deck:'México no es un actor pasivo en el nuevo orden. Su posición fronteriza, su nearshoring y su relación triangular con EEUU y China le otorgan un margen de maniobra que pocos reconocen.', date:'18 Feb 2026', time:'10 min' },
+    articles: [
+      { cat:'Reflexión', tags:'América Latina · Soberanía', title:'El Sur Global y América Latina: ¿liderazgo o seguimiento?', excerpt:'El Sur Global necesita líderes regionales. América Latina tiene la masa crítica pero carece de la articulación política para ejercer ese rol.', date:'5 Feb 2026', time:'8 min' },
+    ],
+    sidebar: [
+      { tags:'China · BRI', title:'Cómo la Ruta de la Seda compra lealtad política', date:'22 Feb 2026' },
+      { tags:'EEUU · Hegemonía', title:'El Imperio Americano en decadencia', date:'25 Feb 2026' },
+    ]
+  },
+  'europa': {
+    label: 'Europa y Occidente',
+    desc: 'Europa ante su mayor crisis existencial desde 1945 — el rearmamento forzado, la dependencia energética rota, la cohesión interna bajo presión y la búsqueda de una autonomía estratégica real.',
+    count: 8, latest: '20 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['OTAN','Rusia','Estados Unidos','Energía','Seguridad','Ucrania'],
+    focos: [{name:'Rearmamento Europeo',region:'Europa · OTAN',color:'#E07800'},{name:'Ucrania — Frente de Guerra',region:'Europa del Este',color:'#CC2200'}],
+    hero: { cat:'Análisis', tags:'Europa · Defensa · OTAN', title:'Europa en crisis existencial', deck:'La presión de Trump sobre los aliados europeos aceleró un debate que llevan décadas evitando: ¿puede Europa actuar estratégicamente sin Estados Unidos? La respuesta ya no puede ser ambigua.', date:'20 Feb 2026', time:'9 min' },
+    articles: [
+      { cat:'Análisis', tags:'Europa · Energía', title:'La independencia energética europea como proyecto político', excerpt:'La crisis ucraniana aceleró lo que la lógica económica había retrasado décadas. Europa construye soberanía energética por necesidad, no por convicción.', date:'12 Feb 2026', time:'6 min' },
+      { cat:'Reflexión', tags:'Europa · OTAN · Ucrania', title:'La equivocación de Occidente con Ucrania', excerpt:'Occidente ganó el argumento moral pero perdió el cálculo estratégico. La guerra de desgaste no debilita a Rusia tanto como fragmenta a Europa.', date:'10 Feb 2026', time:'10 min' },
+    ],
+    sidebar: [
+      { tags:'EEUU · OTAN', title:'El Imperio Americano en decadencia', date:'25 Feb 2026' },
+      { tags:'Rusia · Sanciones', title:'La guerra silenciosa del rublo', date:'20 Feb 2026' },
+    ]
+  },
+  'brics': {
+    label: 'BRICS',
+    desc: 'El bloque que está construyendo las instituciones del orden multipolar — su expansión, sus fricciones internas, sus ambiciones monetarias y su desafío al sistema de Bretton Woods.',
+    count: 6, latest: '10 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['China','India','Rusia','Sur Global','Geoeconomía','Diplomacia'],
+    focos: [{name:'Expansión BRICS+',region:'Global · Sur Global',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'BRICS · Orden Mundial · Geoeconomía', title:'BRICS+: el Sur Global construye sus propias instituciones', deck:'El bloque no es una alianza militar ni un contrapeso ideológico al Occidente. Es algo más interesante: la infraestructura institucional del mundo que viene.', date:'10 Feb 2026', time:'10 min' },
+    articles: [
+      { cat:'Reflexión', tags:'BRICS · Desdolarización', title:'La desdolarización del mundo', excerpt:'El dólar no será reemplazado mañana. Pero la arquitectura financiera que lo sostiene se erosiona sistemáticamente desde múltiples frentes.', date:'2 Feb 2026', time:'11 min' },
+    ],
+    sidebar: [
+      { tags:'China · Hegemonía', title:'China en camino a convertirse en el hegemon', date:'20 Ene 2026' },
+      { tags:'India · Estrategia', title:'India: el tercer actor del nuevo orden', date:'20 Ene 2026' },
+    ]
+  },
+  'mexico': {
+    label: 'México',
+    desc: 'México en el nuevo orden — su posición única en la frontera entre el mundo desarrollado y el emergente, su papel en el nearshoring, y su margen de maniobra geopolítico.',
+    count: 5, latest: '18 Feb 2026', sections: 'Análisis · Reflexión · Perspectivas Fronterizas',
+    related: ['América Latina','Estados Unidos','China','Comercio','Geoeconomía','Gobierno'],
+    focos: [{name:'Expansión BRICS+',region:'Global',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'México · Geopolítica · Nearshoring', title:'Las estrategias de México en la Contra-Globalización', deck:'México no es un actor pasivo en el nuevo orden. Su posición fronteriza y su nearshoring le otorgan un margen de maniobra que pocos reconocen.', date:'18 Feb 2026', time:'10 min' },
+    articles: [
+      { cat:'Reflexión', tags:'México · Frontera · Identidad', title:'Perspectivas Fronterizas: vivir entre dos órdenes', excerpt:'Desde Tijuana-San Diego, el nuevo orden mundial no es abstracto. Es el tráfico en el cruce, los precios del supermercado y los visados que se niegan.', date:'5 Feb 2026', time:'6 min' },
+    ],
+    sidebar: [
+      { tags:'EEUU · Hegemonía', title:'El Imperio Americano en decadencia', date:'25 Feb 2026' },
+      { tags:'China · BRI', title:'Cómo la Ruta de la Seda compra lealtad política', date:'22 Feb 2026' },
+    ]
+  },
+  'geoeconomia': {
+    label: 'Geoeconomía',
+    desc: 'La fusión entre economía y poder — el weaponized trade, las sanciones como instrumento geopolítico, la desdolarización y el fin de la separación entre mercados y estrategia.',
+    count: 10, latest: '28 Feb 2026', sections: 'Análisis · Newsletter',
+    related: ['China','Estados Unidos','BRICS','Comercio','Energía','Tecnología'],
+    focos: [{name:'Desdolarización Global',region:'Global',color:'#2255AA'},{name:'Expansión BRICS+',region:'Global',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'Geoeconomía · Dólar · Arabia Saudita', title:'Arabia Saudita, el yuan y el fin del petrodólar', deck:'Las conversaciones entre Riad y Beijing para facturar petróleo en yuanes aceleran. El sistema financiero del siglo XX tiene fecha de caducidad.', date:'28 Feb 2026', time:'9 min' },
+    articles: [
+      { cat:'Análisis', tags:'Geoeconomía · Desdolarización', title:'La desdolarización del mundo', excerpt:'El dólar no será reemplazado mañana. Pero la arquitectura financiera que lo sostiene se erosiona desde múltiples frentes simultáneamente.', date:'2 Feb 2026', time:'11 min' },
+      { cat:'Análisis', tags:'Geoeconomía · Rusia', title:'La guerra silenciosa del rublo', excerpt:'A pesar de las sanciones, el superávit comercial ruso fluye a través de los Emiratos, Turquía e India. El cerco financiero tiene fugas estructurales.', date:'20 Feb 2026', time:'7 min' },
+    ],
+    sidebar: [
+      { tags:'BRICS · Sur Global', title:'BRICS+: el Sur Global construye sus propias instituciones', date:'10 Feb 2026' },
+      { tags:'China · Comercio', title:'Cómo la Ruta de la Seda compra lealtad política', date:'22 Feb 2026' },
+    ]
+  },
+  'seguridad': {
+    label: 'Seguridad',
+    desc: 'Conflictos armados, disuasión nuclear, guerras híbridas y la militarización del orden internacional — el análisis de la violencia como instrumento político en el siglo XXI.',
+    count: 8, latest: '20 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['Rusia','China','Estados Unidos','Europa','Medio Oriente','África'],
+    focos: [{name:'Ucrania — Frente de Guerra',region:'Europa del Este',color:'#CC2200'},{name:'Reconfiguración Post-Gaza',region:'Medio Oriente',color:'#CC2200'},{name:'Sudán',region:'África',color:'#CC2200'}],
+    hero: { cat:'Análisis', tags:'Seguridad · Rusia · OTAN', title:'La equivocación de Occidente con Ucrania', deck:'Occidente ganó el argumento moral pero perdió el cálculo estratégico. La guerra de desgaste no debilita a Rusia tanto como fragmenta a Europa y agota la solidaridad occidental.', date:'20 Feb 2026', time:'10 min' },
+    articles: [
+      { cat:'Análisis', tags:'Seguridad · Sahel · África', title:'El giro deliberado del Sahel', excerpt:'La retirada francesa no fue un accidente. Fue el resultado de décadas de resentimiento colonial y la oferta rusa llegó en el momento preciso.', date:'12 Feb 2026', time:'8 min' },
+    ],
+    sidebar: [
+      { tags:'Rusia · Economía', title:'La guerra silenciosa del rublo', date:'20 Feb 2026' },
+      { tags:'Europa · Defensa', title:'Europa en crisis existencial', date:'20 Feb 2026' },
+    ]
+  },
+  'tecnologia': {
+    label: 'Tecnología',
+    desc: 'La revolución tecnológica como campo de batalla geopolítico — semiconductores, inteligencia artificial, robótica y la carrera por definir quién controla la infraestructura del futuro.',
+    count: 7, latest: '28 Feb 2026', sections: 'Análisis · Newsletter',
+    related: ['China','Estados Unidos','Geoeconomía','Comercio','Seguridad','BRICS'],
+    focos: [{name:'Estrecho de Taiwán',region:'Indo-Pacífico',color:'#E07800'}],
+    hero: { cat:'Análisis', tags:'Tecnología · China · EEUU', title:'La guerra de los semiconductores no es sobre chips', deck:'Los controles de exportación de Washington son el primer movimiento de una campaña más profunda — sobre quién define la arquitectura de la próxima era industrial.', date:'28 Feb 2026', time:'8 min' },
+    articles: [
+      { cat:'Análisis', tags:'Tecnología · AI · Geopolítica', title:'La revolución tecnológica: AI y la industria robótica', excerpt:'La inteligencia artificial no es solo una herramienta económica. Es el próximo campo de batalla donde se decidirá la hegemonía del siglo XXI.', date:'15 Feb 2026', time:'10 min' },
+      { cat:'Análisis', tags:'Tecnología · EEUU · Tecnonacionalismo', title:'Estados Unidos y el crecimiento del Tecnonacionalismo', excerpt:'Washington ya no separa economía de seguridad nacional. Cada chip, cable submarino y algoritmo es ahora un activo estratégico que proteger.', date:'10 Feb 2026', time:'9 min' },
+    ],
+    sidebar: [
+      { tags:'China · Hegemonía', title:'China en camino a convertirse en el hegemon', date:'20 Ene 2026' },
+      { tags:'Geoeconomía · Comercio', title:'La guerra económica que no termina', date:'5 Feb 2026' },
+    ]
+  },
+  'energia': {
+    label: 'Energía y Medio Ambiente',
+    desc: 'La transición energética como reconfiguración geopolítica — el fin del petrodólar, el ascenso de los electroestados, la energía como arma y el clima como variable estratégica.',
+    count: 5, latest: '12 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['Geoeconomía','Medio Oriente','Rusia','Europa','China','Comercio'],
+    focos: [{name:'Desdolarización Global',region:'Global',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'Energía · Europa · Geopolítica', title:'La independencia energética europea como proyecto político', deck:'La crisis ucraniana aceleró lo que la lógica económica había retrasado décadas. Europa construye soberanía energética por necesidad, no por convicción ideológica.', date:'12 Feb 2026', time:'6 min' },
+    articles: [
+      { cat:'Análisis', tags:'Energía · Petroestados · Transición', title:'Electroestados vs Petroestados', excerpt:'La transición energética no es solo ambiental. Es la más grande redistribución de poder geopolítico desde el descubrimiento del petróleo.', date:'5 Feb 2026', time:'9 min' },
+    ],
+    sidebar: [
+      { tags:'Medio Oriente · Geoeconomía', title:'Arabia Saudita, el yuan y el fin del petrodólar', date:'28 Feb 2026' },
+      { tags:'Rusia · Sanciones', title:'La guerra silenciosa del rublo', date:'20 Feb 2026' },
+    ]
+  },
+  'comercio': {
+    label: 'Comercio',
+    desc: 'El comercio internacional como campo de batalla — aranceles, reshoring, nearshoring, cadenas de suministro como arma geopolítica y el fin de la globalización sin restricciones.',
+    count: 6, latest: '15 Feb 2026', sections: 'Análisis · Newsletter',
+    related: ['China','Estados Unidos','Geoeconomía','Tecnología','México','BRICS'],
+    focos: [{name:'Desdolarización Global',region:'Global',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'Comercio · China · EEUU', title:'La contra-globalización y el nuevo proteccionismo', deck:'El libre comercio sin condiciones fue el consenso del siglo XX. El siglo XXI lo está desmantelando sistemáticamente — no por ideología sino por necesidad estratégica.', date:'15 Feb 2026', time:'8 min' },
+    articles: [
+      { cat:'Análisis', tags:'Comercio · México · Nearshoring', title:'Las estrategias de México en la Contra-Globalización', excerpt:'México no es un actor pasivo en el nuevo orden. Su posición fronteriza y el nearshoring le otorgan un margen de maniobra que pocos reconocen.', date:'18 Feb 2026', time:'10 min' },
+    ],
+    sidebar: [
+      { tags:'China · BRI', title:'Cómo la Ruta de la Seda compra lealtad política', date:'22 Feb 2026' },
+      { tags:'Geoeconomía · Dólar', title:'La desdolarización del mundo', date:'2 Feb 2026' },
+    ]
+  },
+  'gobierno': {
+    label: 'Gobierno',
+    desc: 'Modelos de gobierno en competencia — la meritocracia china, la democracia liberal bajo presión, el autoritarismo competitivo y los nuevos paradigmas de legitimidad política.',
+    count: 4, latest: '8 Feb 2026', sections: 'Análisis · Reflexión',
+    related: ['China','Estados Unidos','Sur Global','Diplomacia','Seguridad','BRICS'],
+    focos: [],
+    hero: { cat:'Análisis', tags:'Gobierno · China · Democracia', title:'Las falacias de la "dictadura china": la meritocracia del PCC', deck:'El sistema político chino es profundamente incomprendido en Occidente. Ni dictadura personal ni democracia liberal — algo más complejo, más resistente y más adaptable.', date:'8 Feb 2026', time:'10 min' },
+    articles: [
+      { cat:'Reflexión', tags:'Gobierno · Orden Mundial', title:'Los Estados-Civilización y el fin del universalismo liberal', excerpt:'China, Rusia, India y Turquía se piensan a sí mismos como civilizaciones, no como naciones-estado. Eso cambia todo sobre cómo negocian y cómo combaten.', date:'1 Feb 2026', time:'9 min' },
+    ],
+    sidebar: [
+      { tags:'China · Xi Jinping', title:'El propósito chino: Zhōng Mèng y Xi Jinping', date:'8 Feb 2026' },
+      { tags:'Sur Global · Soberanía', title:'El giro deliberado del Sahel', date:'12 Feb 2026' },
+    ]
+  },
+  'diplomacia': {
+    label: 'Relaciones Internacionales y Diplomacia',
+    desc: 'El arte de la negociación en el nuevo orden multipolar — alianzas, tratados, organismos internacionales, mediaciones y la diplomacia de los actores emergentes.',
+    count: 7, latest: '22 Feb 2026', sections: 'Análisis · Reflexión · Newsletter',
+    related: ['China','India','Sur Global','BRICS','Estados Unidos','Seguridad'],
+    focos: [{name:'Reconfiguración Post-Gaza',region:'Medio Oriente',color:'#CC2200'},{name:'Expansión BRICS+',region:'Global',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'Diplomacia · India · No Alineación', title:'La no alineación como modelo de negocio', deck:'Nueva Delhi compra petróleo ruso con descuento, vende refinados a Europa con prima, y mantiene alianzas con Washington y Moscú simultáneamente. La neutralidad estratégica tiene precio de mercado.', date:'22 Feb 2026', time:'7 min' },
+    articles: [
+      { cat:'Análisis', tags:'Diplomacia · China · Sur Global', title:'Los Estados Conectores en el nuevo orden', excerpt:'Entre las grandes potencias en competencia emergen Estados que no se alinean con ninguna pero se benefician de todas. Son los grandes ganadores del orden multipolar.', date:'15 Feb 2026', time:'9 min' },
+      { cat:'Reflexión', tags:'Diplomacia · Paz · Orden Mundial', title:'La paz mundial y la armonía internacional', excerpt:'¿Es posible la paz en un mundo multipolar sin hegemon? La historia sugiere que es más probable que bajo el unipolarismo — pero también más frágil.', date:'8 Feb 2026', time:'8 min' },
+    ],
+    sidebar: [
+      { tags:'China · Civilización', title:'Los Estados-Civilización y el fin del universalismo', date:'1 Feb 2026' },
+      { tags:'India · Estrategia', title:'India: el tercer actor del nuevo orden', date:'20 Ene 2026' },
+    ]
+  },
+  'mundo': {
+    label: 'Mundo',
+    desc: 'El nuevo orden mundial en su totalidad — la contra-globalización, el multipolarismo, los grandes marcos conceptuales para entender la transición sistémica que estamos viviendo.',
+    count: 12, latest: '28 Feb 2026', sections: 'Análisis · Reflexión · Newsletter',
+    related: ['China','Estados Unidos','Sur Global','BRICS','Geoeconomía','Diplomacia'],
+    focos: [{name:'Desdolarización Global',region:'Global',color:'#2255AA'},{name:'Expansión BRICS+',region:'Global',color:'#2255AA'}],
+    hero: { cat:'Análisis', tags:'Orden Mundial · Contra-Globalización', title:'El nuevo orden mundial: la Contra-Globalización', deck:'No estamos viviendo el fin de la globalización sino su transformación más profunda. El orden que emerge no es la reversión al siglo XIX — es algo sin precedentes históricos claros.', date:'28 Feb 2026', time:'14 min' },
+    articles: [
+      { cat:'Análisis', tags:'Orden Mundial · Civilización', title:'Los Estados-Civilización y el fin del universalismo liberal', excerpt:'China, Rusia, India y Turquía se piensan a sí mismos como civilizaciones, no como naciones-estado. Eso cambia todo sobre cómo negocian y cómo combaten.', date:'20 Feb 2026', time:'9 min' },
+      { cat:'Reflexión', tags:'Orden Mundial · Sur Global', title:'El Sur Global y la nueva multipolaridad', excerpt:'El Sur Global no es un bloque homogéneo ni una alianza formal. Es la suma de países que ya no aceptan que el Norte defina las reglas del juego.', date:'12 Feb 2026', time:'8 min' },
+      { cat:'Análisis', tags:'Orden Mundial · Conectores', title:'Los Estados Conectores en el nuevo orden', excerpt:'Entre las grandes potencias en competencia emergen Estados que no se alinean con ninguna pero se benefician de todas. Son los grandes ganadores.', date:'5 Feb 2026', time:'9 min' },
+    ],
+    sidebar: [
+      { tags:'China · Hegemonía', title:'China en camino a convertirse en el hegemon', date:'20 Ene 2026' },
+      { tags:'EEUU · Declive', title:'El Imperio Americano en decadencia', date:'25 Feb 2026' },
+      { tags:'BRICS · Instituciones', title:'BRICS+: el Sur Global construye sus propias instituciones', date:'10 Feb 2026' },
+    ]
+  }
+};
+
+// ── RENDER ──
+function getTema() {
+  const p = new URLSearchParams(window.location.search);
+  return p.get('tema') || 'mundo';
+}
+
+function render() {
+  const key = getTema();
+  const t = TEMAS[key] || TEMAS['mundo'];
+
+  // Page title
+  document.title = `${t.label} — HAVOC UNDR HEAVEN`;
+
+  // Breadcrumb
+  document.getElementById('bc-current').textContent = t.label;
+
+  // Header
+  document.getElementById('tema-title').textContent = t.label;
+  document.getElementById('tema-desc').textContent = t.desc;
+  document.getElementById('tema-count').textContent = t.count;
+  document.getElementById('tema-latest').textContent = t.latest;
+  document.getElementById('tema-sections').textContent = t.sections;
+
+  // Active region pill
+  document.querySelectorAll('.region-item[data-tema]').forEach(el => {
+    el.classList.toggle('active', el.dataset.tema === key);
+  });
+
+  // Related pills
+  document.getElementById('related-pills').innerHTML = t.related
+    .map(r => `<a href="havoc_tema.html?tema=${r.toLowerCase().replace(/ /g,'-').replace(/[áà]/g,'a').replace(/[éè]/g,'e').replace(/[íì]/g,'i').replace(/[óò]/g,'o').replace(/[úù]/g,'u').replace(/ñ/g,'n')}" class="related-pill">${r}</a>`)
+    .join('');
+
+  // Hero
+  const h = t.hero;
+  document.getElementById('feed-hero-slot').innerHTML = `
+    <div class="feed-hero">
+      <div class="feed-hero-img"></div>
+      <div class="feed-eyebrow">
+        <span class="cat-tag">${h.cat}</span>
+        <span class="topic-tag">${h.tags}</span>
+      </div>
+      <h2 class="feed-hero-title">${h.title}</h2>
+      <p class="feed-hero-deck">${h.deck}</p>
+      <div class="feed-hero-meta"><span>${h.date}</span><span>${h.time} de lectura</span></div>
+    </div>`;
+
+  // Articles
+  document.getElementById('feed-items-slot').innerHTML = t.articles.map(a => `
+    <div class="feed-item">
+      <div>
+        <div class="feed-eyebrow"><span class="cat-tag">${a.cat}</span><span class="topic-tag">${a.tags}</span></div>
+        <div class="feed-item-title">${a.title}</div>
+        <div class="feed-item-excerpt">${a.excerpt}</div>
+        <div class="feed-item-meta">${a.date} · ${a.time}</div>
+      </div>
+      <div class="feed-thumb"></div>
+    </div>`).join('');
+
+  // Sidebar related
+  document.getElementById('sidebar-related').innerHTML = t.sidebar.map(s => `
+    <div class="sidebar-art">
+      <div class="sidebar-art-tag">${s.tags}</div>
+      <div class="sidebar-art-title">${s.title}</div>
+      <div class="sidebar-art-date">${s.date}</div>
+    </div>`).join('');
+
+  // Sidebar focos
+  const fc = document.getElementById('sidebar-focos');
+  if (t.focos.length === 0) {
+    fc.parentElement.style.display = 'none';
+  } else {
+    fc.innerHTML = t.focos.map(f => `
+      <div class="foco-row">
+        <div class="fdot-sm" style="background:${f.color}"></div>
+        <div><div class="foco-row-name">${f.name}</div><div class="foco-row-region">${f.region}</div></div>
+      </div>`).join('');
+  }
+}
+
+render();
+
+// Filter tabs
+document.querySelectorAll('.feed-filter').forEach(f => {
+  f.addEventListener('click', () => {
+    document.querySelectorAll('.feed-filter').forEach(x => x.classList.remove('active'));
+    f.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
