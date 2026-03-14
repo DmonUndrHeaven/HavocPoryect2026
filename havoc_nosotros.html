@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre Nosotros — HAVOC UNDR HEAVEN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500&display=swap');
+  :root {
+    --black:#0A0A0A; --dark:#1A1A1A; --border:#E0E0E0; --muted:#999; --mid:#555;
+    --text:#1A1A1A; --white:#FFFFFF; --off:#F7F7F5;
+    --font-display:'Bebas Neue',Impact,sans-serif;
+    --font-serif:'Playfair Display',Georgia,serif;
+    --font-body:'Inter',sans-serif;
+    --font-cond:'Oswald',sans-serif;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:#FFF;color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased;text-align:justify}
+  a{color:inherit;text-decoration:none}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:var(--black);border-bottom:1px solid #2A2A2A;padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:52px}
+  .nav-links{display:flex;gap:28px;list-style:none}
+  .nav-links a{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#888;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:#FFF}
+  .nav-links a.active{color:#FFF}
+  .nav-dropdown-wrap{position:relative}
+  .nav-dropdown-wrap>a::after{content:' ▾';font-size:7px;opacity:.5}
+  .nav-dropdown{display:none;position:absolute;top:52px;left:0;background:var(--black);border:1px solid #2A2A2A;border-top:none;min-width:180px;z-index:200}
+  .nav-dropdown-wrap.open .nav-dropdown{display:block}
+  .nav-search-wrap{display:flex;align-items:center;gap:0;padding:10px 14px;border-bottom:1px solid #1E1E1E}
+  .nav-search-input{background:transparent;border:none;outline:none;color:#888;font-size:10px;letter-spacing:1.5px;font-family:var(--font-body);width:128px;text-transform:uppercase}
+  .nav-search-input::placeholder{color:#333}
+  .nav-search-input:focus{color:#FFF}
+  .nav-search-btn{background:none;border:none;cursor:pointer;color:#444;font-size:11px;padding:0 0 0 6px;transition:color .2s;line-height:1}
+  .nav-search-btn:hover{color:#FFF}
+  .nav-dropdown a{display:block;padding:12px 18px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;border-bottom:1px solid #1E1E1E;transition:color .2s}
+  .nav-dropdown a:hover{color:#FFF}
+  .nav-dropdown a:last-child{border-bottom:none}
+  .nav-subscribe{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:#FFF;border:1px solid #444;padding:7px 18px;transition:all .2s}
+  .nav-subscribe:hover{background:#FFF;color:var(--black)}
+
+  /* MASTHEAD */
+  .masthead{background:var(--black);padding:28px 48px 22px;text-align:center;border-bottom:2px solid #2A2A2A}
+  .masthead-meta{display:flex;justify-content:flex-end;margin-bottom:20px}
+  .masthead-meta span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555}
+  .masthead-logo{width:620px;filter:none;display:block;margin:0 auto}
+  .masthead-catchphrase{font-family:var(--font-body);font-size:14px;font-weight:600;letter-spacing:6px;text-transform:uppercase;color:#FFF;margin-top:14px}
+
+  /* OPENING STATEMENT — full bleed black */
+  .opening{background:var(--black);padding:96px 48px;text-align:center;border-bottom:1px solid #1A1A1A;position:relative;overflow:hidden}
+  .opening::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 0%, #1A1A1A 0%, var(--black) 65%);pointer-events:none}
+  .opening-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#444;margin-bottom:32px;position:relative}
+  .opening-title{font-family:var(--font-display);font-size:clamp(56px,8vw,110px);letter-spacing:4px;color:#FFF;line-height:.9;margin-bottom:40px;position:relative}
+  .opening-title span{display:block}
+  .opening-title .accent{color:#FFF;opacity:.18}
+  .opening-statement{font-family:var(--font-serif);font-size:clamp(18px,2.2vw,24px);font-style:italic;color:#888;line-height:1.65;max-width:680px;margin:0 auto;position:relative}
+  .opening-statement strong{color:#FFF;font-style:normal}
+
+  /* BREADCRUMB */
+  .breadcrumb{padding:12px 48px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center}
+  .breadcrumb span{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+  .breadcrumb .sep{color:var(--border)}
+  .breadcrumb .current{color:var(--text);font-weight:600}
+
+  /* MISSION SECTION */
+  .mission{border-bottom:1px solid var(--border)}
+  .mission-inner{max-width:900px;margin:0 auto;padding:72px 48px;}
+  .mission-left{}
+  .section-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .section-title{font-family:var(--font-display);font-size:56px;letter-spacing:3px;color:var(--text);line-height:.95;margin-bottom:28px}
+  .mission-statement{font-family:var(--font-serif);font-size:20px;font-style:italic;color:var(--mid);line-height:1.7;border-left:3px solid var(--text);padding-left:24px;margin-bottom:32px}
+  .mission-body p{font-size:15px;line-height:1.8;color:var(--mid);margin-bottom:18px}
+  .mission-body p:last-child{margin-bottom:0}
+  .mission-right{}
+  .pull-quote{background:var(--black);padding:40px 36px;margin-bottom:28px}
+  .pq-mark{font-family:var(--font-display);font-size:80px;color:#1A1A1A;line-height:.6;margin-bottom:8px}
+  .pq-text{font-family:var(--font-serif);font-size:22px;font-style:italic;color:#FFF;line-height:1.5;margin-bottom:20px}
+  .pq-attr{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#555}
+  .values-list{display:flex;flex-direction:column;gap:0}
+  .value-row{padding:16px 0;border-bottom:1px solid var(--border);display:flex;gap:20px;align-items:flex-start}
+  .value-row:first-child{border-top:1px solid var(--border)}
+  .value-num{font-family:var(--font-display);font-size:28px;color:var(--border);flex-shrink:0;line-height:1}
+  .value-content{}
+  .value-title{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text);margin-bottom:4px}
+  .value-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+  /* PHILOSOPHY — dark strip */
+  .philosophy{background:var(--dark);border-top:1px solid #2A2A2A;border-bottom:1px solid #2A2A2A}
+  .philosophy-inner{max-width:1200px;margin:0 auto;padding:72px 48px}
+  .philosophy-grid{display:grid;grid-template-columns:320px 1fr;gap:80px;align-items:start}
+  .philosophy-label{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#444;margin-bottom:12px}
+  .philosophy-title{font-family:var(--font-display);font-size:52px;letter-spacing:3px;color:#FFF;line-height:.95}
+  .philosophy-divider{width:40px;height:2px;background:#333;margin:24px 0}
+  .philosophy-sub{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#444}
+  .philosophy-text p{font-family:var(--font-serif);font-size:17px;font-style:italic;color:#666;line-height:1.8;margin-bottom:22px}
+  .philosophy-text p:last-child{margin-bottom:0}
+  .philosophy-text strong{color:#999;font-style:normal}
+  .mao-quote{margin-top:36px;padding:28px 32px;border:1px solid #2A2A2A;background:var(--black)}
+  .mao-text{font-family:var(--font-serif);font-size:18px;font-style:italic;color:#666;line-height:1.6;margin-bottom:12px}
+  .mao-source{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#333}
+
+  /* WHAT WE COVER */
+  .coverage{border-bottom:1px solid var(--border)}
+  .coverage-inner{max-width:1200px;margin:0 auto;padding:72px 48px}
+  .coverage-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:48px}
+  .coverage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border)}
+  .coverage-item{padding:24px 20px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .coverage-item:nth-child(4n){border-right:none}
+  .coverage-item:nth-last-child(-n+4){border-bottom:none}
+  .coverage-icon{font-family:var(--font-display);font-size:32px;letter-spacing:2px;color:var(--border);margin-bottom:10px;line-height:1}
+  .coverage-name{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text);margin-bottom:6px}
+  .coverage-desc{font-size:12px;color:var(--muted);line-height:1.55;text-align:justify}
+
+  /* WHAT MAKES US DIFFERENT */
+  .different{background:var(--off);border-bottom:1px solid var(--border)}
+  .different-inner{max-width:1200px;margin:0 auto;padding:72px 48px}
+  .diff-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin-top:40px;border-top:2px solid var(--text)}
+  .diff-item{padding:32px 32px 32px 0;border-right:1px solid var(--border)}
+  .diff-item:last-child{border-right:none;padding-right:0;padding-left:32px}
+  .diff-item:nth-child(2){padding:32px}
+  .diff-num{font-family:var(--font-display);font-size:52px;color:var(--border);line-height:1;margin-bottom:10px}
+  .diff-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text);margin-bottom:10px}
+  .diff-body{font-size:14px;color:var(--mid);line-height:1.7}
+
+  /* FOUNDER NOTE */
+  .founder{border-bottom:1px solid var(--border)}
+  .founder-inner{max-width:1200px;margin:0 auto;padding:72px 48px;display:grid;grid-template-columns:280px 1fr;gap:72px;align-items:start}
+  .founder-card{background:var(--black);padding:32px}
+  .founder-avatar{width:80px;height:80px;border-radius:50%;background:#1A1A1A;border:1px solid #2A2A2A;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:24px;letter-spacing:1px;color:#FFF;margin-bottom:16px}
+  .founder-name{font-family:var(--font-display);font-size:22px;letter-spacing:2px;color:#FFF;margin-bottom:4px}
+  .founder-role{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#555;margin-bottom:16px}
+  .founder-location{font-size:11px;color:#444;letter-spacing:1px}
+  .founder-location span{color:#666}
+  .founder-text{}
+  .founder-text .section-eyebrow{margin-bottom:16px}
+  .founder-text .section-title{font-size:44px;margin-bottom:28px}
+  .founder-text p{font-family:var(--font-serif);font-size:16px;color:var(--mid);line-height:1.8;margin-bottom:20px}
+  .founder-text p:last-child{margin-bottom:0}
+  .founder-text p.lead{font-size:18px;font-style:italic;color:var(--text)}
+
+  /* NEWSLETTER CTA */
+  .cta{background:var(--black);padding:80px 48px;text-align:center}
+  .cta-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#444;margin-bottom:20px}
+  .cta-title{font-family:var(--font-display);font-size:clamp(40px,6vw,72px);letter-spacing:4px;color:#FFF;line-height:.95;margin-bottom:16px}
+  .cta-sub{font-family:var(--font-serif);font-size:16px;font-style:italic;color:#555;margin-bottom:40px}
+  .cta-form{display:flex;gap:0;max-width:480px;margin:0 auto}
+  .cta-input{flex:1;background:var(--dark);border:1px solid #2A2A2A;border-right:none;color:#FFF;padding:14px 18px;font-size:13px;font-family:var(--font-body);outline:none}
+  .cta-input::placeholder{color:#444}
+  .cta-btn{background:#FFF;color:var(--black);border:none;padding:14px 24px;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;cursor:pointer;font-family:var(--font-body);white-space:nowrap;transition:background .2s}
+  .cta-btn:hover{background:#DDD}
+  .cta-note{font-size:10px;color:#333;letter-spacing:1px;text-transform:uppercase;margin-top:14px}
+
+  /* FOOTER */
+  footer{background:var(--dark);border-top:2px solid var(--black);padding:36px 48px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px}
+  .footer-logo-text{font-family:var(--font-display);font-size:26px;letter-spacing:4px;color:#FFF;margin-bottom:10px}
+  .footer-catch{font-family:var(--font-serif);font-size:12px;font-style:italic;color:#555;line-height:1.5}
+  .footer-col-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#555;margin-bottom:14px}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .footer-links a{font-size:13px;color:#AAA;transition:color .2s}
+  .footer-links a:hover{color:#FFF}
+  .footer-bottom{background:var(--dark);border-top:1px solid #2A2A2A;padding:14px 48px;display:flex;justify-content:space-between}
+  .footer-copy{font-size:10px;color:#444;letter-spacing:1px;text-transform:uppercase}
+  .footer-social{display:flex;gap:20px}
+  .footer-social a{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;transition:color .2s}
+  .footer-social a:hover{color:#FFF}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="havoc_nosotros.html" class="active">Nosotros</a></li>
+    <li><a href="havoc_category_redes.html">Redes</a></li>
+    <li class="nav-dropdown-wrap">
+      <a href="#">Publicaciones</a>
+      <div class="nav-dropdown">
+        <a href="havoc_category.html">Análisis</a>
+        <a href="#">Reflexión</a>
+        <a href="#">Newsletter</a>
+        <a href="#">Redes</a>
+        <div class="nav-search-wrap">
+          <input class="nav-search-input" type="text" placeholder="Buscar...">
+          <button class="nav-search-btn">⌕</button>
+        </div>
+      </div>
+    </li>
+    <li class="nav-dropdown-wrap">
+      <a href="#">Estado del Mundo</a>
+      <div class="nav-dropdown">
+        <a href="havoc_focos_index.html">Focos de Tensión</a>
+        <a href="#">Tablero Global</a>
+      </div>
+    </li>
+  </ul>
+  <a href="#" class="nav-subscribe">Suscribirse</a>
+</nav>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-meta">
+    <span></span>
+    <span id="masthead-date"></span>
+  </div>
+  <img class="masthead-logo" src="images/havoc_logo.png" alt="HAVOC UNDR HEAVEN">
+  <div class="masthead-catchphrase">El nuevo orden mundial está aquí</div>
+</div>
+
+<!-- OPENING STATEMENT -->
+<div class="opening">
+  <div class="opening-eyebrow">Sobre Nosotros</div>
+  <h1 class="opening-title">
+    <span>El mundo ha</span>
+    <span>entrado en una</span>
+    <span class="accent">nueva era.</span>
+  </h1>
+  <p class="opening-statement">
+    Una era de <strong>crisis y oportunidad simultáneas.</strong> El orden que conocimos está fracturándose. Lo que emerge en su lugar es un terreno inexplorado — pero tiene dirección, tiene actores, y tiene consecuencias para todos. Havoc Undr Heaven existe para explicarlo.
+  </p>
+
+  <div style="margin-top:48px;position:relative;">
+    <p style="font-family:'Bebas Neue',Impact,sans-serif;font-size:clamp(22px,3vw,34px);letter-spacing:4px;color:#FFF;line-height:1.2;margin-bottom:10px;">Hay un gran desorden bajo el cielo, y la situación es excelente.</p>
+    <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#333;">Mao Zedong</div>
+  </div>
+</div>
+
+<!-- HERO IMAGE -->
+<div style="width:100%;height:480px;overflow:hidden;position:relative;border-bottom:1px solid #1A1A1A;">
+  <img src="images/nosotros_photo.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(100%) contrast(1.05);">
+  <div style="position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);"></div>
+  <div style="position:absolute;bottom:24px;right:48px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);">Xi Jinping · Donald Trump</div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <span><a href="index.html">Inicio</a></span>
+  <span class="sep">›</span>
+  <span class="current">Sobre Nosotros</span>
+</div>
+
+<!-- MISSION -->
+<div class="mission">
+  <div class="mission-inner">
+    <div class="mission-left">
+      <div class="section-eyebrow">Nuestra Misión</div>
+      <h2 class="section-title">Por qué existimos</h2>
+      <div class="mission-statement">
+        Hacer accesible el análisis geopolítico serio para quienes buscan comprender el mundo en el que vivimos — su gobernanza (o falta de ella), sus conflictos y las consecuencias que estas tienen en el tablero global. Sin academicismo, sin subjetividad. Un análisis que comprende el nuevo mundo.
+      </div>
+      <div class="mission-body">
+        <p>El mundo ha cambiado y los medios convencionales no lo saben procesar. La geopolítica y las relaciones internacionales son el marco que determina nuestra cotidianidad, qué precios pagamos, qué guerras se pelean y qué futuro es posible. Entenderlas no es un lujo — es una necesidad. Nuestra apuesta es simple: <em>leer el desorden con rigor, y con la convicción de que entenderlo es el primer paso para navegarlo.</em></p>
+      </div>
+
+      <div style="margin-top:32px;padding:28px 32px;background:var(--black);">
+        <p style="font-family:var(--font-serif);font-size:17px;font-style:italic;color:#FFF;line-height:1.65;margin-bottom:10px;">"En todo caos hay cosmos, en todo desorden hay un orden."</p>
+        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#555;">Havoc Undr Heaven · Principio editorial</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- WHAT WE COVER -->
+<div class="coverage">
+  <div class="coverage-inner">
+    <div class="coverage-header">
+      <div>
+        <div class="section-eyebrow">Qué cubrimos</div>
+        <h2 class="section-title">Las fuerzas que mueven el mundo</h2>
+      </div>
+      <div style="padding-top:16px">
+        <p style="font-family:var(--font-serif);font-size:15px;font-style:italic;color:var(--mid);line-height:1.7">No cubrimos todos los eventos. Cubrimos los procesos estructurales — las tendencias de largo plazo que determinan el tablero sobre el que se juegan todos los eventos.</p>
+      </div>
+    </div>
+    <div class="coverage-grid">
+      <div class="coverage-item">
+        <div class="coverage-icon">GEO</div>
+        <div class="coverage-name">Geopolítica</div>
+        <div class="coverage-desc">Competencia entre grandes potencias, guerras, alianzas y el reordenamiento del sistema internacional.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">ECO</div>
+        <div class="coverage-name">Geoeconomía</div>
+        <div class="coverage-desc">Comercio como arma, desdolarización, sanciones, y la fusión entre economía y seguridad nacional.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">TEC</div>
+        <div class="coverage-name">Tecnología</div>
+        <div class="coverage-desc">Semiconductores, inteligencia artificial, carrera tecnológica y la infraestructura del poder en el siglo XXI.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">CIV</div>
+        <div class="coverage-name">Civilización</div>
+        <div class="coverage-desc">Estados-civilización, identidad estratégica, y los proyectos históricos que compiten por definir el futuro.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">ENE</div>
+        <div class="coverage-name">Energía</div>
+        <div class="coverage-desc">Transición energética como reconfiguración geopolítica. Petroestados vs electroestados.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">EEUU</div>
+        <div class="coverage-name">Estados Unidos</div>
+        <div class="coverage-desc">El Imperio en transición — su política exterior, tecnonacionalismo y reconfiguración en el nuevo orden multipolar.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">CHN</div>
+        <div class="coverage-name">China</div>
+        <div class="coverage-desc">El ascenso del hegemon — su modelo político, estrategia económica y proyecto civilizacional en construcción.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">APAC</div>
+        <div class="coverage-name">Asia-Pacífico</div>
+        <div class="coverage-desc">El epicentro del siglo XXI — rivalidades navales, carrera tecnológica y el reordenamiento regional.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">EUR</div>
+        <div class="coverage-name">Europa</div>
+        <div class="coverage-desc">Europa ante su mayor crisis existencial — rearmamento, dependencia energética rota y la búsqueda de autonomía estratégica.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">MOR</div>
+        <div class="coverage-name">Medio Oriente</div>
+        <div class="coverage-desc">La región más volátil del mundo — reordenamiento post-Gaza, rivalidades regionales y el fin del orden americano en la zona.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">SUR</div>
+        <div class="coverage-name">Sur Global</div>
+        <div class="coverage-desc">El ascenso de los países no alineados, BRICS+ y la construcción de un orden alternativo.</div>
+      </div>
+      <div class="coverage-item">
+        <div class="coverage-icon">SEG</div>
+        <div class="coverage-name">Seguridad</div>
+        <div class="coverage-desc">Conflictos armados, disuasión nuclear, guerras híbridas y la militarización del orden internacional.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT MAKES US DIFFERENT -->
+<div class="different">
+  <div class="different-inner">
+    <div class="section-eyebrow">Por qué somos distintos</div>
+    <h2 class="section-title">Lo que no encontrarás en otro lugar</h2>
+    <div class="values-list" style="margin-top:40px;">
+    <div class="value-row">
+      <div class="value-num">01</div>
+      <div class="value-content">
+        <div class="value-title">Rigor sin academicismo</div>
+        <div class="value-desc">Investigamos con profundidad, escribimos con claridad. El análisis serio no exige lenguaje incomprensible.</div>
+      </div>
+    </div>
+    <div class="value-row">
+      <div class="value-num">02</div>
+      <div class="value-content">
+        <div class="value-title">Independencia editorial</div>
+        <div class="value-desc">Sin anunciantes, sin agenda partidaria, sin gobierno que nos financie. Solo el compromiso con entender bien.</div>
+      </div>
+    </div>
+    <div class="value-row">
+      <div class="value-num">03</div>
+      <div class="value-content">
+        <div class="value-title">Perspectiva no occidental</div>
+        <div class="value-desc">El mundo no se explica solo desde Washington o Bruselas. Leemos el tablero desde la periferia del sistema — que es desde donde más se ve.</div>
+      </div>
+    </div>
+    <div class="value-row">
+      <div class="value-num">04</div>
+      <div class="value-content">
+        <div class="value-title">Largo plazo sobre coyuntura</div>
+        <div class="value-desc">No cubrimos el ruido. Cubrimos las fuerzas estructurales que explican por qué el ruido existe.</div>
+      </div>
+    </div>
+      </div>
+  </div>
+</div>
+
+<!-- CLOSING PHILOSOPHY -->
+<div style="background:var(--black);padding:80px 48px;text-align:center;border-bottom:1px solid #1A1A1A;">
+  <p style="font-family:var(--font-serif);font-size:clamp(20px,2.8vw,30px);font-style:italic;color:#FFF;line-height:1.65;max-width:760px;margin:0 auto 20px;">"Comprender el mundo no es difícil — pero pensarlo puede hacer que así parezca. Mientras exista una voluntad por entenderlo, hay un camino para mejorarlo."</p>
+  <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#444;">Nuestra Filosofía · Havoc Undr Heaven</div>
+</div>
+
+<!-- NEWSLETTER CTA -->
+<div class="cta">
+  <div class="cta-eyebrow">Únete a la conversación</div>
+  <h2 class="cta-title">Havoc Dispatch</h2>
+  <p class="cta-sub">Análisis geopolítico semanal directo a tu correo. Sin ruido, sin agenda.</p>
+  <div class="cta-form">
+    <input class="cta-input" type="email" placeholder="tu@correo.com">
+    <button class="cta-btn">Suscribirse</button>
+  </div>
+  <p class="cta-note">Gratuito · Sin spam · Cancelación inmediata</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo-text">HAVOC UNDR HEAVEN</div>
+    <div class="footer-catch">El nuevo orden mundial está aquí.<br>Nosotros lo explicamos.</div>
+  </div>
+  <div>
+    <div class="footer-col-title">Secciones</div>
+    <ul class="footer-links">
+      <li><a href="havoc_category.html">Análisis</a></li>
+      <li><a href="havoc_category_reflexion.html">Reflexión</a></li>
+      <li><a href="havoc_category_newsletter.html">Newsletter</a></li>
+      <li><a href="havoc_focos_index.html">Focos de Tensión</a></li>
+      <li><a href="havoc_tablero.html">Tablero Global</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Acerca De</div>
+    <ul class="footer-links">
+      <li><a href="havoc_nosotros.html">Nosotros</a></li>
+      <li><a href="havoc_category_redes.html">Redes</a></li>
+      <li><a href="#">Contacto</a></li>
+      <li><a href="#">Suscribirse</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2026 Havoc Undr Heaven · Todos los derechos reservados</span>
+  <div class="footer-social"><a href="#">Instagram</a><a href="#">Spotify</a><a href="#">Newsletter</a></div>
+</div>
+
+<script>
+  document.getElementById('masthead-date').textContent =
+    new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.querySelectorAll('.nav-dropdown-wrap > a').forEach(function(trigger) {
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      var wrap = this.parentElement;
+      var isOpen = wrap.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown-wrap').forEach(function(w) { w.classList.remove('open'); });
+      if (!isOpen) wrap.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-dropdown-wrap')) {
+      document.querySelectorAll('.nav-dropdown-wrap').forEach(function(w) { w.classList.remove('open'); });
+    }
+  });
+</script>
+</body>
+</html>
