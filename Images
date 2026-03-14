@@ -1,0 +1,12 @@
+# Clone your repo
+git clone https://github.com/yourusername/your-repo.git
+cd your-repo
+
+# Create the images folder and copy the files in
+mkdir images
+# drag havoc_logo.png and nosotros_photo.jpg into the images/ folder
+
+git add images/
+git commit -m "Add image assets"
+git push
+
