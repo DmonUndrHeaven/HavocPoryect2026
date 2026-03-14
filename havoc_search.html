@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscar — HAVOC UNDR HEAVEN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500&display=swap');
+  :root {
+    --black:#0A0A0A; --dark:#1A1A1A; --border:#E0E0E0; --muted:#999; --mid:#555;
+    --text:#1A1A1A; --white:#FFFFFF; --off:#F7F7F5;
+    --font-display:'Bebas Neue',Impact,sans-serif;
+    --font-serif:'Playfair Display',Georgia,serif;
+    --font-body:'Inter',sans-serif;
+    --font-cond:'Oswald',sans-serif;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  body{background:#FFF;color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+
+  nav{position:sticky;top:0;z-index:100;background:var(--black);border-bottom:1px solid #2A2A2A;padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:52px}
+  .nav-links{display:flex;gap:28px;list-style:none}
+  .nav-links a{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#888;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:#FFF}
+  .nav-dropdown-wrap{position:relative}
+  .nav-dropdown-wrap>a::after{content:' ▾';font-size:7px;opacity:.5}
+  .nav-dropdown{display:none;position:absolute;top:52px;left:0;background:var(--black);border:1px solid #2A2A2A;border-top:none;min-width:180px;z-index:200}
+  .nav-dropdown-wrap.open .nav-dropdown{display:block}
+  .nav-dropdown a{display:block;padding:12px 18px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;border-bottom:1px solid #1E1E1E;transition:color .2s}
+  .nav-dropdown a:hover{color:#FFF}
+  .nav-dropdown a:last-child{border-bottom:none}
+  .nav-search-wrap{display:flex;align-items:center;gap:0;padding:10px 14px;border-bottom:1px solid #1E1E1E}
+  .nav-search-input{background:transparent;border:none;outline:none;color:#888;font-size:10px;letter-spacing:1.5px;font-family:var(--font-body);width:128px;text-transform:uppercase}
+  .nav-search-input::placeholder{color:#333}
+  .nav-search-input:focus{color:#FFF}
+  .nav-search-btn{background:none;border:none;cursor:pointer;color:#444;font-size:11px;padding:0 0 0 6px;transition:color .2s;line-height:1}
+  .nav-search-btn:hover{color:#FFF}
+  .nav-subscribe{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:#FFF;border:1px solid #444;padding:7px 18px;transition:all .2s}
+  .nav-subscribe:hover{background:#FFF;color:var(--black)}
+
+  .masthead{background:var(--black);padding:28px 48px 22px;text-align:center;border-bottom:2px solid #2A2A2A}
+  .masthead-meta{display:flex;justify-content:flex-end;margin-bottom:20px}
+  .masthead-meta span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555}
+  .masthead-logo{width: 620px;filter:none;display:block;margin:0 auto}
+  .masthead-catchphrase{font-family: var(--font-body);font-size: 14px;font-weight: 600;letter-spacing: 6px;text-transform:uppercase;color:#FFF;margin-top:14px}
+
+  /* SEARCH HERO BAR */
+  .search-hero{background:var(--off);border-bottom:2px solid var(--text);padding:40px 48px}
+  .search-hero-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .search-bar-big{display:flex;align-items:center;border-bottom:2px solid var(--text);padding-bottom:12px;max-width:760px;gap:16px}
+  .search-bar-big input{flex:1;background:transparent;border:none;outline:none;font-family:var(--font-display);font-size:44px;letter-spacing:3px;color:var(--text);caret-color:var(--text)}
+  .search-bar-big input::placeholder{color:#CCC}
+  .search-bar-big button{background:var(--black);color:#FFF;border:none;padding:10px 22px;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);font-weight:600;white-space:nowrap;transition:background .2s}
+  .search-bar-big button:hover{background:#333}
+  .search-meta{margin-top:16px;display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .search-count{font-size:12px;color:var(--muted);letter-spacing:.5px}
+  .search-count strong{color:var(--text);font-weight:700}
+  .search-filters{display:flex;gap:8px;flex-wrap:wrap}
+  .sf{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:5px 14px;cursor:pointer;transition:all .2s;background:var(--white)}
+  .sf.active,.sf:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+
+  /* BODY */
+  .search-body{max-width:1200px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 300px;gap:0}
+
+  /* RESULTS */
+  .results{border-right:1px solid var(--border);padding:40px 56px 48px 0}
+  .results-sort{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .sort-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+  .sort-options{display:flex;gap:0}
+  .sort-opt{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:5px 14px;border:1px solid var(--border);cursor:pointer;margin-left:-1px;transition:all .2s;background:var(--white)}
+  .sort-opt.active,.sort-opt:hover{background:var(--black);color:var(--white);border-color:var(--black);z-index:1;position:relative}
+
+  /* Result item */
+  .result-item{padding:22px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 110px;gap:20px;cursor:pointer;transition:opacity .2s}
+  .result-item:hover{opacity:.75}
+  .result-item:last-child{border-bottom:none}
+  .result-eyebrow{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+  .cat-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--white);background:var(--black);padding:3px 10px}
+  .topic-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+  .result-title{font-family:var(--font-serif);font-size:20px;font-weight:700;line-height:1.2;color:var(--text);margin-bottom:7px}
+  .result-title mark{background:transparent;color:var(--text);text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+  .result-excerpt{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:8px}
+  .result-excerpt mark{background:#F5F0D8;color:var(--text);padding:0 2px}
+  .result-meta{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#CCC;display:flex;gap:14px}
+  .result-thumb{width:110px;height:74px;background:#F0F0F0;border:1px solid var(--border);align-self:start}
+
+  /* No results */
+  .no-results{padding:60px 0;text-align:center}
+  .no-results-icon{font-size:40px;color:var(--border);margin-bottom:20px}
+  .no-results-title{font-family:var(--font-display);font-size:32px;letter-spacing:3px;color:var(--text);margin-bottom:10px}
+  .no-results-sub{font-family:var(--font-serif);font-size:14px;font-style:italic;color:var(--muted);line-height:1.7;max-width:420px;margin:0 auto 28px}
+  .suggestions-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .suggestions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .suggestion-pill{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:6px 16px;cursor:pointer;transition:all .2s}
+  .suggestion-pill:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+
+  /* Trending */
+  .trending-section{margin-top:40px;padding-top:28px;border-top:1px solid var(--border)}
+  .trending-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .trending-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .trending-item{padding:14px;border:1px solid var(--border);cursor:pointer;transition:all .2s}
+  .trending-item:hover{background:var(--off)}
+  .trending-num{font-family:var(--font-display);font-size:28px;color:var(--border);line-height:1;margin-bottom:4px}
+  .trending-title{font-family:var(--font-serif);font-size:13px;font-weight:700;line-height:1.3;color:var(--text);margin-bottom:3px}
+  .trending-meta{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+
+  /* SIDEBAR */
+  .search-sidebar{padding:40px 0 48px 36px}
+  .sidebar-block{margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+  .sidebar-block:last-child{border-bottom:none}
+  .sidebar-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  .newsletter-box{background:var(--dark);padding:20px}
+  .newsletter-box h3{font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:#FFF;margin-bottom:6px}
+  .newsletter-box p{font-size:12px;color:#888;line-height:1.6;margin-bottom:12px}
+  .newsletter-input{width:100%;background:var(--black);border:1px solid #333;color:#FFF;padding:8px 12px;font-size:12px;font-family:var(--font-body);margin-bottom:8px;outline:none}
+  .newsletter-input::placeholder{color:#555}
+  .newsletter-btn{width:100%;background:#FFF;color:var(--black);border:none;padding:9px;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;cursor:pointer;font-family:var(--font-body)}
+
+  .tema-pill-grid{display:flex;flex-wrap:wrap;gap:6px}
+  .tema-pill{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:5px 10px;cursor:pointer;transition:all .2s}
+  .tema-pill:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+
+  footer{background:var(--dark);border-top:2px solid var(--black);padding:36px 48px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px}
+  .footer-logo-text{font-family:var(--font-display);font-size:26px;letter-spacing:4px;color:#FFF;margin-bottom:10px}
+  .footer-catch{font-family:var(--font-serif);font-size:12px;font-style:italic;color:#555;line-height:1.5}
+  .footer-col-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#555;margin-bottom:14px}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .footer-links a{font-size:13px;color:#AAA;transition:color .2s}
+  .footer-links a:hover{color:#FFF}
+  .footer-bottom{background:var(--dark);border-top:1px solid #2A2A2A;padding:14px 48px;display:flex;justify-content:space-between}
+  .footer-copy{font-size:10px;color:#444;letter-spacing:1px;text-transform:uppercase}
+  .footer-social{display:flex;gap:20px}
+  .footer-social a{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;transition:color .2s}
+  .footer-social a:hover{color:#FFF}
+</style>
+</head>
+<body>
+
+<nav>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="havoc_nosotros.html">Nosotros</a></li>
+    <li><a href="havoc_category_redes.html">Redes</a></li>
+    <li class="nav-dropdown-wrap">
+      <a href="#">Publicaciones</a>
+      <div class="nav-dropdown">
+        <a href="havoc_category.html">Análisis</a>
+        <a href="havoc_reflexion.html">Reflexión</a>
+        <a href="havoc_newsletter_v4.html">Newsletter</a>
+        <a href="havoc_category_redes.html">Redes</a>
+        <div class="nav-search-wrap">
+          <input class="nav-search-input" type="text" placeholder="Buscar...">
+          <button class="nav-search-btn">⌕</button>
+        </div>
+      </div>
+    </li>
+    <li class="nav-dropdown-wrap">
+      <a href="#">Estado del Mundo</a>
+      <div class="nav-dropdown">
+        <a href="havoc_focos_index.html">Focos de Tensión</a>
+        <a href="#">Tablero Global</a>
+      </div>
+    </li>
+  </ul>
+  <a href="#" class="nav-subscribe">Suscribirse</a>
+</nav>
+
+<div class="masthead">
+    <div class="masthead-meta">
+    <span></span>
+    <span id="masthead-date"></span>
+  </div>
+  <img class="masthead-logo" src="images/havoc_logo.png" alt="HAVOC UNDR HEAVEN">
+  <div class="masthead-catchphrase">El nuevo orden mundial está aquí</div>
+</div>
+
+<!-- SEARCH HERO -->
+<div class="search-hero">
+  <div class="search-hero-label">Búsqueda</div>
+  <div class="search-bar-big">
+    <input type="text" id="search-input" placeholder="¿Qué estás buscando?" autocomplete="off">
+    <button onclick="doSearch()">Buscar</button>
+  </div>
+  <div class="search-meta">
+    <span class="search-count" id="search-count"></span>
+    <div class="search-filters" id="search-filters">
+      <div class="sf active" data-filter="todo">Todo</div>
+      <div class="sf" data-filter="analisis">Análisis</div>
+      <div class="sf" data-filter="reflexion">Reflexión</div>
+      <div class="sf" data-filter="newsletter">Newsletter</div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="search-body">
+  <div class="results">
+    <div class="results-sort">
+      <span class="sort-label">Ordenar por</span>
+      <div class="sort-options">
+        <div class="sort-opt active" data-sort="relevancia">Relevancia</div>
+        <div class="sort-opt" data-sort="reciente">Más reciente</div>
+        <div class="sort-opt" data-sort="antiguo">Más antiguo</div>
+      </div>
+    </div>
+    <div id="results-container"></div>
+  </div>
+
+  <aside class="search-sidebar">
+    <div class="sidebar-block">
+      <div class="sidebar-label">Newsletter Semanal</div>
+      <div class="newsletter-box">
+        <h3>HAVOC DISPATCH</h3>
+        <p>Análisis geopolítico directo a tu correo cada semana.</p>
+        <input class="newsletter-input" type="email" placeholder="tu@correo.com">
+        <button class="newsletter-btn">Suscribirse</button>
+      </div>
+    </div>
+    <div class="sidebar-block">
+      <div class="sidebar-label">Explorar por Tema</div>
+      <div class="tema-pill-grid">
+        <a href="havoc_tema.html?tema=china" class="tema-pill">China</a>
+        <a href="havoc_tema.html?tema=estados-unidos" class="tema-pill">Estados Unidos</a>
+        <a href="havoc_tema.html?tema=rusia" class="tema-pill">Rusia</a>
+        <a href="havoc_tema.html?tema=asia-pacifico" class="tema-pill">Asia-Pacífico</a>
+        <a href="havoc_tema.html?tema=medio-oriente" class="tema-pill">Medio Oriente</a>
+        <a href="havoc_tema.html?tema=america-latina" class="tema-pill">América Latina</a>
+        <a href="havoc_tema.html?tema=europa" class="tema-pill">Europa</a>
+        <a href="havoc_tema.html?tema=brics" class="tema-pill">BRICS</a>
+        <a href="havoc_tema.html?tema=mexico" class="tema-pill">México</a>
+        <a href="havoc_tema.html?tema=geoeconomia" class="tema-pill">Geoeconomía</a>
+        <a href="havoc_tema.html?tema=tecnologia" class="tema-pill">Tecnología</a>
+        <a href="havoc_tema.html?tema=energia" class="tema-pill">Energía</a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <div>
+    <div class="footer-logo-text">HAVOC UNDR HEAVEN</div>
+    <div class="footer-catch">El nuevo orden mundial está aquí.<br>Nosotros lo explicamos.</div>
+  </div>
+  <div>
+    <div class="footer-col-title">Secciones</div>
+    <ul class="footer-links">
+      <li><a href="havoc_category.html">Análisis</a></li>
+      <li><a href="havoc_reflexion.html">Reflexión</a></li>
+      <li><a href="havoc_newsletter_v4.html">Newsletter</a></li>
+      <li><a href="havoc_focos_index.html">Focos de Tensión</a></li>
+      <li><a href="havoc_tablero.html">Tablero Global</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Acerca De</div>
+    <ul class="footer-links">
+      <li><a href="havoc_nosotros.html">Nosotros</a></li>
+      <li><a href="havoc_category_redes.html">Redes</a></li>
+      <li><a href="#">Contacto</a></li>
+      <li><a href="#">Suscribirse</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2026 Havoc Undr Heaven · Todos los derechos reservados</span>
+  <div class="footer-social"><a href="#">Instagram</a><a href="#">Spotify</a><a href="#">Newsletter</a></div>
+</div>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2026 Havoc Undr Heaven · Todos los derechos reservados</span>
+  <div class="footer-social"><a href="#">Instagram</a><a href="#">Spotify</a><a href="#">Newsletter</a></div>
+</div>
+
+<script>
+  document.getElementById('masthead-date').textContent =
+    new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.querySelectorAll('.nav-dropdown-wrap > a').forEach(function(trigger) {
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      var wrap = this.parentElement;
+      var isOpen = wrap.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown-wrap').forEach(function(w) { w.classList.remove('open'); });
+      if (!isOpen) wrap.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-dropdown-wrap')) {
+      document.querySelectorAll('.nav-dropdown-wrap').forEach(function(w) { w.classList.remove('open'); });
+    }
+  });
+
+  // ── ALL ARTICLES DATABASE ──
+const ARTICLES = [
+  { cat:'Análisis', tags:'China · Tecnología · Estados Unidos', title:'La guerra de los semiconductores no es sobre chips', excerpt:'Los controles de exportación de Washington son el primer movimiento de una campaña más profunda — sobre quién define la arquitectura de la próxima era industrial.', date:'28 Feb 2026', ts:20260228, time:'8 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'Estados Unidos · Hegemonía', title:'El Imperio Americano en decadencia', excerpt:'El unipolarismo no terminó con una derrota militar. Terminó con la acumulación silenciosa de alternativas que Washington no supo ver venir.', date:'25 Feb 2026', ts:20260225, time:'12 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'China · BRI', title:'Cómo la Ruta de la Seda compra lealtad política', excerpt:'La Iniciativa del Cinturón y la Ruta no es un proyecto de desarrollo. Es la infraestructura política del orden chino en construcción.', date:'22 Feb 2026', ts:20260222, time:'8 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'Europa · Defensa · OTAN', title:'Europa en crisis existencial', excerpt:'La presión de Trump sobre los aliados europeos aceleró un debate que llevan décadas evitando: ¿puede Europa actuar estratégicamente sin Estados Unidos?', date:'20 Feb 2026', ts:20260220, time:'9 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'EEUU · Tecnología', title:'Estados Unidos y el crecimiento del Tecnonacionalismo', excerpt:'Washington ya no separa economía de seguridad nacional. Cada chip, cada cable submarino, cada algoritmo es ahora un activo estratégico.', date:'18 Feb 2026', ts:20260218, time:'9 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'México · Geopolítica · Nearshoring', title:'Las estrategias de México en la Contra-Globalización', excerpt:'México no es un actor pasivo en el nuevo orden. Su posición fronteriza y el nearshoring le otorgan un margen de maniobra que pocos reconocen.', date:'18 Feb 2026', ts:20260218, time:'10 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'Medio Oriente · Geoeconomía', title:'Arabia Saudita, el yuan y el fin del petrodólar', excerpt:'Las conversaciones entre Riad y Beijing para facturar petróleo en yuanes aceleran. El sistema financiero del siglo XX tiene fecha de caducidad.', date:'15 Feb 2026', ts:20260215, time:'9 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'China · PCC', title:'Las falacias de la "dictadura china": la meritocracia del PCC', excerpt:'El sistema político chino es incomprendido en Occidente. Ni dictadura personal ni democracia liberal — algo más complejo y más estable.', date:'15 Feb 2026', ts:20260215, time:'10 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'India · Diplomacia', title:'La no alineación como modelo de negocio', excerpt:'Nueva Delhi compra petróleo ruso con descuento, vende refinados a Europa con prima, y mantiene alianzas con Washington y Moscú simultáneamente.', date:'12 Feb 2026', ts:20260212, time:'7 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'Sahel · África · Rusia', title:'El giro deliberado del Sahel', excerpt:'La retirada francesa no fue un accidente. Fue el resultado de décadas de resentimiento colonial y la oferta rusa llegó en el momento preciso.', date:'12 Feb 2026', ts:20260212, time:'8 min', url:'havoc_article.html' },
+  { cat:'Reflexión', tags:'Europa · OTAN · Ucrania', title:'La equivocación de Occidente con Ucrania', excerpt:'Occidente ganó el argumento moral pero perdió el cálculo estratégico. La guerra de desgaste no debilita a Rusia tanto como fragmenta a Europa.', date:'10 Feb 2026', ts:20260210, time:'10 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'BRICS · Orden Mundial', title:'BRICS+: el Sur Global construye sus propias instituciones', excerpt:'El bloque no es una alianza militar ni un contrapeso ideológico. Es la infraestructura institucional del mundo que viene.', date:'10 Feb 2026', ts:20260210, time:'10 min', url:'havoc_article.html' },
+  { cat:'Reflexión', tags:'China · Civilización', title:'El propósito chino: Zhōng Mèng y Xi Jinping', excerpt:'El Sueño Chino no es una consigna vacía. Es la articulación de un proyecto civilizacional con siglos de historia detrás.', date:'8 Feb 2026', ts:20260208, time:'9 min', url:'havoc_article.html' },
+  { cat:'Reflexión', tags:'Orden Mundial · Civilización', title:'Los Estados-Civilización y el fin del universalismo liberal', excerpt:'China, Rusia, India y Turquía se piensan a sí mismos como civilizaciones, no como naciones-estado. Eso cambia todo sobre cómo negocian.', date:'1 Feb 2026', ts:20260201, time:'9 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'China · Taiwán · Seguridad', title:'China y Taiwán: ¿hay lugar para la reunificación?', excerpt:'Beijing no ha renunciado a Taiwán. La pregunta es cuándo y cómo — no si. Las variables apuntan a una ventana entre 2027 y 2035.', date:'1 Feb 2026', ts:20260201, time:'11 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'Geoeconomía · Desdolarización', title:'La desdolarización del mundo', excerpt:'El dólar no será reemplazado mañana. Pero la arquitectura financiera que lo sostiene se erosiona sistemáticamente desde múltiples frentes.', date:'2 Feb 2026', ts:20260202, time:'11 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'Energía · Petroestados', title:'Electroestados vs Petroestados', excerpt:'La transición energética no es solo ambiental. Es la más grande redistribución de poder geopolítico desde el descubrimiento del petróleo.', date:'5 Feb 2026', ts:20260205, time:'9 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'Orden Mundial · Conectores', title:'Los Estados Conectores en el nuevo orden', excerpt:'Entre las grandes potencias en competencia emergen Estados que no se alinean con ninguna pero se benefician de todas. Son los grandes ganadores.', date:'5 Feb 2026', ts:20260205, time:'9 min', url:'havoc_article.html' },
+  { cat:'Reflexión', tags:'Paz · Orden Mundial', title:'La paz mundial y la armonía internacional', excerpt:'¿Es posible la paz en un mundo multipolar sin hegemon? La historia sugiere que es más probable que bajo el unipolarismo — pero también más frágil.', date:'8 Feb 2026', ts:20260208, time:'8 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'India · Estrategia · Hegemonía', title:'India: el tercer actor del nuevo orden', excerpt:'Nueva Delhi juega un juego de suma positiva que Washington y Beijing aún no han aprendido a contrarrestar. La autonomía estratégica tiene precio de mercado.', date:'20 Ene 2026', ts:20260120, time:'10 min', url:'havoc_article.html' },
+  { cat:'Análisis', tags:'Orden Mundial · Contra-Globalización', title:'El nuevo orden mundial: la Contra-Globalización', excerpt:'No estamos viviendo el fin de la globalización sino su transformación más profunda. El orden que emerge no tiene precedentes históricos claros.', date:'15 Ene 2026', ts:20260115, time:'14 min', url:'havoc_article.html' },
+  { cat:'Newsletter', tags:'Resumen Semanal', title:'Havoc Dispatch #8 — La semana que movió el tablero', excerpt:'Rearmamento europeo, crisis en el Sahel, y los nuevos números del comercio sino-americano. Todo lo que importó esta semana en geopolítica.', date:'28 Feb 2026', ts:20260228, time:'5 min', url:'havoc_article.html' },
+  { cat:'Reflexión', tags:'Corea del Norte · Diplomacia', title:'Corea del Norte se comienza a abrir al mundo', excerpt:'Pyongyang está probando canales discretos. La apertura, si llega, será controlada, gradual y condicionada a garantías de supervivencia del régimen.', date:'8 Feb 2026', ts:20260208, time:'7 min', url:'havoc_article.html' },
+];
+
+const TRENDING = [
+  { title:'La guerra de los semiconductores no es sobre chips', meta:'Análisis · 28 Feb 2026' },
+  { title:'El Imperio Americano en decadencia', meta:'Análisis · 25 Feb 2026' },
+  { title:'Europa en crisis existencial', meta:'Análisis · 20 Feb 2026' },
+  { title:'Los Estados-Civilización y el fin del universalismo liberal', meta:'Reflexión · 1 Feb 2026' },
+];
+
+let currentFilter = 'todo';
+let currentSort = 'relevancia';
+let currentQuery = '';
+
+function highlight(text, q) {
+  if (!q) return text;
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+function scoreArticle(a, q) {
+  if (!q) return 1;
+  const ql = q.toLowerCase();
+  let score = 0;
+  if (a.title.toLowerCase().includes(ql)) score += 10;
+  if (a.tags.toLowerCase().includes(ql)) score += 6;
+  if (a.excerpt.toLowerCase().includes(ql)) score += 3;
+  if (a.cat.toLowerCase().includes(ql)) score += 2;
+  return score;
+}
+
+function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (q) {
+    const url = new URL(window.location);
+    url.searchParams.set('q', q);
+    window.history.pushState({}, '', url);
+  }
+  renderResults(q);
+}
+
+function renderResults(q) {
+  currentQuery = q;
+  const container = document.getElementById('results-container');
+  const countEl   = document.getElementById('search-count');
+
+  // Filter
+  let results = ARTICLES.filter(a => {
+    const matchFilter = currentFilter === 'todo' ||
+      (currentFilter === 'analisis'   && a.cat === 'Análisis') ||
+      (currentFilter === 'reflexion'  && a.cat === 'Reflexión') ||
+      (currentFilter === 'newsletter' && a.cat === 'Newsletter');
+    if (!matchFilter) return false;
+    if (!q) return true;
+    return scoreArticle(a, q) > 0;
+  });
+
+  // Sort
+  if (currentSort === 'reciente') results.sort((a,b) => b.ts - a.ts);
+  else if (currentSort === 'antiguo') results.sort((a,b) => a.ts - b.ts);
+  else if (q) results.sort((a,b) => scoreArticle(b,q) - scoreArticle(a,q));
+
+  // Count
+  if (q) {
+    countEl.innerHTML = results.length > 0
+      ? `<strong>${results.length}</strong> resultado${results.length !== 1 ? 's' : ''} para "<strong>${q}</strong>"`
+      : `Sin resultados para "<strong>${q}</strong>"`;
+  } else {
+    countEl.innerHTML = `Mostrando <strong>${results.length}</strong> artículos`;
+  }
+
+  // Render
+  if (results.length === 0) {
+    container.innerHTML = `
+      <div class="no-results">
+        <div class="no-results-icon">◎</div>
+        <div class="no-results-title">Sin resultados</div>
+        <p class="no-results-sub">No encontramos artículos que coincidan con "<strong>${q}</strong>". Prueba con otros términos o explora por tema.</p>
+        <div class="suggestions-label">Búsquedas frecuentes</div>
+        <div class="suggestions">
+          ${['China','Estados Unidos','Rusia','Ucrania','BRICS','Tecnología','Desdolarización','India'].map(s =>
+            `<span class="suggestion-pill" onclick="searchFor('${s}')">${s}</span>`
+          ).join('')}
+        </div>
+      </div>
+      <div class="trending-section">
+        <div class="trending-label">Artículos más leídos</div>
+        <div class="trending-grid">
+          ${TRENDING.map((t,i) => `
+            <div class="trending-item">
+              <div class="trending-num">0${i+1}</div>
+              <div class="trending-title">${t.title}</div>
+              <div class="trending-meta">${t.meta}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    return;
+  }
+
+  if (!q) {
+    // No query — show trending section below
+    container.innerHTML = results.map(a => `
+      <div class="result-item" onclick="location.href='${a.url}'">
+        <div>
+          <div class="result-eyebrow"><span class="cat-tag">${a.cat}</span><span class="topic-tag">${a.tags}</span></div>
+          <div class="result-title">${a.title}</div>
+          <div class="result-excerpt">${a.excerpt}</div>
+          <div class="result-meta"><span>${a.date}</span><span>${a.time} de lectura</span></div>
+        </div>
+        <div class="result-thumb"></div>
+      </div>`).join('') + `
+      <div class="trending-section">
+        <div class="trending-label">Más leídos</div>
+        <div class="trending-grid">
+          ${TRENDING.map((t,i) => `
+            <div class="trending-item">
+              <div class="trending-num">0${i+1}</div>
+              <div class="trending-title">${t.title}</div>
+              <div class="trending-meta">${t.meta}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = results.map(a => `
+    <div class="result-item" onclick="location.href='${a.url}'">
+      <div>
+        <div class="result-eyebrow"><span class="cat-tag">${a.cat}</span><span class="topic-tag">${a.tags}</span></div>
+        <div class="result-title">${highlight(a.title, q)}</div>
+        <div class="result-excerpt">${highlight(a.excerpt, q)}</div>
+        <div class="result-meta"><span>${a.date}</span><span>${a.time} de lectura</span></div>
+      </div>
+      <div class="result-thumb"></div>
+    </div>`).join('');
+}
+
+function searchFor(term) {
+  document.getElementById('search-input').value = term;
+  doSearch();
+}
+
+// Filter buttons
+document.querySelectorAll('.sf').forEach(f => {
+  f.addEventListener('click', () => {
+    document.querySelectorAll('.sf').forEach(x => x.classList.remove('active'));
+    f.classList.add('active');
+    currentFilter = f.dataset.filter;
+    renderResults(currentQuery);
+  });
+});
+
+// Sort buttons
+document.querySelectorAll('.sort-opt').forEach(s => {
+  s.addEventListener('click', () => {
+    document.querySelectorAll('.sort-opt').forEach(x => x.classList.remove('active'));
+    s.classList.add('active');
+    currentSort = s.dataset.sort;
+    renderResults(currentQuery);
+  });
+});
+
+// Enter key
+document.getElementById('search-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+
+// On load — read URL param
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get('q') || '';
+  document.getElementById('search-input').value = q;
+  renderResults(q);
+});
+</script>
+</body>
+</html>
