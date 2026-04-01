@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Globo — Focos de Tensión · HAVOC UNDR HEAVEN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700&family=Inter:wght@300;400;500;600&display=swap');
+  :root {
+    --black:#000; --border:#1E1E1E; --muted:#555;
+    --red:#CC2200; --orange:#DD7700; --blue:#2255AA;
+    --font-display:'Bebas Neue',Impact,sans-serif;
+    --font-serif:'Playfair Display',Georgia,serif;
+    --font-body:'Inter',sans-serif;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;background:#000;color:#fff;font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  .header{padding:22px 48px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end}
+  .hlabel{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .htitle{font-family:var(--font-display);font-size:48px;letter-spacing:3px;line-height:1}
+  .hdesc{font-family:var(--font-serif);font-size:12px;font-style:italic;color:#333;line-height:1.6;max-width:260px;text-align:right}
+  .gsection{display:grid;grid-template-columns:1fr 300px;height:560px;border-bottom:1px solid var(--border)}
+  .gwrap{position:relative;overflow:hidden;border-right:1px solid var(--border);cursor:grab;background:#000}
+  .gwrap:active{cursor:grabbing}
+  #gc{width:100%;height:100%;display:block}
+  .hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#222;pointer-events:none;transition:opacity 1.5s}
+  .panel{display:flex;flex-direction:column;background:#000}
+  .phead{padding:20px 22px 16px;border-bottom:1px solid var(--border)}
+  .plbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .ptitle{font-family:var(--font-display);font-size:15px;letter-spacing:2px;color:#333}
+  .pempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;gap:14px}
+  .pring{width:42px;height:42px;border-radius:50%;border:1px solid #1A1A1A;display:flex;align-items:center;justify-content:center;color:#222;font-size:18px}
+  .phint{font-family:var(--font-serif);font-size:12px;font-style:italic;color:#2A2A2A;line-height:1.7}
+  .pfoco{display:none;flex-direction:column;flex:1;overflow-y:auto}
+  .pfoco.on{display:flex}
+  .ftop{padding:18px 22px 14px;border-bottom:1px solid var(--border)}
+  .fsr{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+  .sdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;position:relative}
+  .sdot.hot{background:var(--red)}.sdot.warm{background:var(--orange)}.sdot.cold{background:var(--blue)}
+  .sdot.hot::after,.sdot.warm::after{content:'';position:absolute;top:-4px;left:-4px;width:16px;height:16px;border-radius:50%;animation:pulse 2s ease-out infinite}
+  .sdot.hot::after{background:var(--red)}.sdot.warm::after{background:var(--orange)}
+  @keyframes pulse{0%{opacity:.5;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+  .slbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+  .slbl.hot{color:var(--red)}.slbl.warm{color:var(--orange)}.slbl.cold{color:var(--blue)}
+  .fname{font-family:var(--font-display);font-size:24px;letter-spacing:2px;color:#fff;line-height:1;margin-bottom:4px}
+  .freg{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+  .fbody{padding:16px 22px;flex:1}
+  .fsum{font-family:var(--font-serif);font-size:12px;font-style:italic;color:#666;line-height:1.7;margin-bottom:16px}
+  .irow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #0E0E0E;font-size:11px}
+  .irow:last-child{border-bottom:none}
+  .iname{color:#333}.ival{font-weight:600;font-size:10px;letter-spacing:1px}
+  .val-h{color:var(--red)}.val-m{color:var(--orange)}.val-l{color:var(--blue)}
+  .flink{display:block;text-align:center;padding:9px;border:1px solid #1A1A1A;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#333;text-decoration:none;transition:all .2s;margin-top:10px}
+  .flink:hover{background:#fff;color:#000;border-color:#fff}
+  .flist{border-top:1px solid var(--border)}
+  .flhd{padding:10px 48px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#1E1E1E;border-bottom:1px solid var(--border);background:#050505}
+  .flgrid{display:grid;grid-template-columns:repeat(9,1fr)}
+  .fitem{padding:11px 12px;border-right:1px solid var(--border);cursor:pointer;transition:background .15s;display:flex;gap:8px;align-items:flex-start}
+  .fitem:last-child{border-right:none}
+  .fitem:hover{background:#0A0A0A}.fitem.on{background:#0D0D0D}
+  .ldot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:3px}
+  .lname{font-size:10px;font-weight:600;color:#3A3A3A;line-height:1.3}
+  .lreg{font-size:8px;color:#222;letter-spacing:1px;text-transform:uppercase;margin-top:1px}
+  .fitem:hover .lname{color:#777}.fitem.on .lname{color:#AAA}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="hlabel">Havoc Undr Heaven · Mapa de Conflictos</div>
+    <div class="htitle">Focos de Tensión</div>
+  </div>
+  <div class="hdesc">Arrastra para rotar. Haz clic en un marcador para ver el estado del foco.</div>
+</div>
+
+<div class="gsection">
+  <div class="gwrap">
+    <canvas id="gc"></canvas>
+    <div class="hint" id="hint">← Arrastra para rotar →</div>
+  </div>
+  <div class="panel">
+    <div class="phead">
+      <div class="plbl">Estado del Foco</div>
+      <div class="ptitle" id="ptitle">Selecciona un marcador</div>
+    </div>
+    <div class="pempty" id="pempty">
+      <div class="pring">◎</div>
+      <div class="phint">Haz clic sobre cualquier punto del globo para ver el estado del foco de tensión.</div>
+    </div>
+    <div class="pfoco" id="pfoco">
+      <div class="ftop">
+        <div class="fsr"><div class="sdot" id="fdot"></div><span class="slbl" id="fslbl"></span></div>
+        <div class="fname" id="fname"></div>
+        <div class="freg" id="freg"></div>
+      </div>
+      <div class="fbody">
+        <div class="fsum" id="fsum"></div>
+        <div id="find"></div>
+        <a href="#" class="flink">Ver análisis completo →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flist">
+  <div class="flhd">Todos los focos</div>
+  <div class="flgrid" id="fgrid"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ── DATA ──
+const FOCOS = [
+  {id:'ucrania', name:'Ucrania', region:'Europa del Este', status:'hot', label:'Conflicto Activo', lat:49, lng:31,
+   sum:'El conflicto que reconfiguró la arquitectura de seguridad europea. Las negociaciones de alto el fuego siguen bloqueadas mientras el debate sobre el compromiso occidental se intensifica.',
+   ind:[{n:'Intensidad militar',v:'Alta',c:'val-h'},{n:'Presión diplomática',v:'Alta',c:'val-h'},{n:'Riesgo de escalada',v:'Media',c:'val-m'}]},
+  {id:'taiwan', name:'Estrecho de Taiwán', region:'Indo-Pacífico', status:'warm', label:'Tensión Elevada', lat:23.5, lng:121,
+   sum:'La disputa más peligrosa del mundo. El EPL escala ejercicios militares mientras Washington revisa si la ambigüedad estratégica sigue siendo un disuasor creíble.',
+   ind:[{n:'Actividad militar',v:'Alta',c:'val-h'},{n:'Riesgo de conflicto',v:'Media',c:'val-m'},{n:'Presión diplomática',v:'Media',c:'val-m'}]},
+  {id:'gaza', name:'Medio Oriente', region:'Medio Oriente', status:'hot', label:'Conflicto Activo', lat:31.5, lng:35,
+   sum:'Reordenamiento de alianzas regionales. La normalización árabe-israelí está estancada pero los cálculos estratégicos en Riad han cambiado permanentemente.',
+   ind:[{n:'Inestabilidad regional',v:'Alta',c:'val-h'},{n:'Proceso diplomático',v:'Baja',c:'val-l'},{n:'Riesgo de escalada',v:'Media',c:'val-m'}]},
+  {id:'sahel', name:'Sahel', region:'África Occidental', status:'warm', label:'Tensión Elevada', lat:13, lng:-2,
+   sum:'Mali, Níger y Burkina Faso expulsan fuerzas francesas y giran hacia Rusia y China. Las élites africanas usan la competencia entre grandes potencias como palanca de soberanía.',
+   ind:[{n:'Inestabilidad política',v:'Alta',c:'val-h'},{n:'Presencia rusa',v:'Alta',c:'val-h'},{n:'Influencia occidental',v:'Baja',c:'val-l'}]},
+  {id:'sudan', name:'Sudán', region:'África del Norte', status:'hot', label:'Conflicto Activo', lat:15.5, lng:32.5,
+   sum:'La guerra entre las Fuerzas Armadas y las RSF creó la mayor crisis humanitaria del mundo. Potencias externas alimentan el conflicto mientras negocian acceso a recursos.',
+   ind:[{n:'Crisis humanitaria',v:'Alta',c:'val-h'},{n:'Intensidad del conflicto',v:'Alta',c:'val-h'},{n:'Intervención externa',v:'Media',c:'val-m'}]},
+  {id:'scs', name:'Mar del Sur de China', region:'ASEAN · Indo-Pacífico', status:'warm', label:'Tensión Elevada', lat:12, lng:113,
+   sum:'Beijing aserta soberanía sobre aguas disputadas con Filipinas, Vietnam y Malasia. Los incidentes navales aumentan mientras EEUU incrementa presencia regional.',
+   ind:[{n:'Incidentes navales',v:'Alta',c:'val-h'},{n:'Presencia militar china',v:'Alta',c:'val-h'},{n:'Escalada abierta',v:'Baja',c:'val-l'}]},
+  {id:'europa', name:'Rearmamento Europeo', region:'Europa · OTAN', status:'warm', label:'Tensión Elevada', lat:50, lng:10,
+   sum:'La presión de Trump sobre los aliados europeos acelera un debate existencial. ¿Puede Europa actuar estratégicamente sin EEUU? La pregunta ya no es teórica.',
+   ind:[{n:'Presupuestos defensa',v:'Alta',c:'val-h'},{n:'Cohesión OTAN',v:'Media',c:'val-m'},{n:'Autonomía estratégica',v:'Baja',c:'val-l'}]},
+  {id:'brics', name:'Expansión BRICS+', region:'Global · Sur Global', status:'cold', label:'Latente', lat:20, lng:77,
+   sum:'El bloque suma miembros y construye instituciones paralelas al orden de Bretton Woods. Su cohesión interna sigue siendo la pregunta clave del nuevo orden multipolar.',
+   ind:[{n:'Expansión institucional',v:'Alta',c:'val-h'},{n:'Cohesión interna',v:'Media',c:'val-m'},{n:'Tensión activa',v:'Baja',c:'val-l'}]},
+  {id:'corea', name:'Corea del Norte', region:'Indo-Pacífico · Corea', status:'cold', label:'Latente', lat:40, lng:127,
+   sum:'Pyongyang abre canales discretos con actores seleccionados mientras mantiene su programa nuclear como garantía de supervivencia del régimen.',
+   ind:[{n:'Actividad nuclear',v:'Alta',c:'val-h'},{n:'Apertura diplomática',v:'Baja',c:'val-l'},{n:'Riesgo de escalada',v:'Media',c:'val-m'}]},
+];
+
+// ── BUILD TEXTURE ON CANVAS ──
+// Paint a 2:1 equirectangular map (black bg, white continents)
+// then use it as Three.js texture on the sphere
+
+function buildMapTexture() {
+  const W = 2048, H = 1024;
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+
+  // Black background
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, W, H);
+
+  // Helper: lat/lng → pixel x,y
+  function p(lat, lng) {
+    return [(lng + 180) / 360 * W, (90 - lat) / 180 * H];
+  }
+
+  // Draw a continent polygon
+  function continent(coords) {
+    ctx.beginPath();
+    const [sx, sy] = p(coords[0][0], coords[0][1]);
+    ctx.moveTo(sx, sy);
+    for (let i = 1; i < coords.length; i++) {
+      const [x, y] = p(coords[i][0], coords[i][1]);
+      ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fill();
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // ── NORTH AMERICA ──
+  continent([
+    [71,-141],[70,-135],[68,-136],[65,-168],[60,-165],[56,-160],[57,-152],[60,-148],[61,-150],[59,-152],[56,-163],[53,-167],[52,-174],[56,-178],[60,-168],[63,-170],[66,-167],[68,-158],[70,-148],[71,-141],
+  ]);
+  continent([
+    [72,-80],[73,-86],[74,-94],[73,-107],[72,-115],[72,-126],[68,-136],[65,-136],[60,-141],[55,-130],[50,-128],[48,-125],[46,-124],[42,-124],[38,-123],[35,-121],[32,-117],[29,-115],[22,-106],[20,-105],[18,-104],[16,-99],[15,-92],[16,-90],[16,-88],[15,-88],[10,-83],[9,-80],[8,-77],[9,-79],[11,-85],[14,-90],[15,-92],[18,-94],[20,-97],[21,-90],[22,-90],[25,-80],[30,-81],[32,-80],[35,-76],[38,-75],[40,-74],[42,-70],[44,-68],[47,-65],[47,-53],[50,-56],[52,-58],[55,-60],[58,-65],[62,-78],[58,-78],[57,-76],[56,-76],[55,-80],[55,-85],[57,-90],[57,-85],[57,-79],[60,-75],[65,-72],[68,-65],[70,-68],[72,-80],
+  ]);
+
+  // ── GREENLAND ──
+  continent([
+    [60,-44],[62,-48],[65,-52],[68,-54],[72,-56],[76,-60],[80,-58],[82,-54],[84,-48],[82,-28],[80,-18],[76,-18],[72,-24],[68,-24],[66,-34],[64,-40],[60,-44],
+  ]);
+
+  // ── SOUTH AMERICA ──
+  continent([
+    [12,-72],[10,-75],[8,-77],[5,-77],[2,-77],[0,-78],[-2,-80],[-5,-81],[-8,-78],[-10,-75],[-14,-76],[-18,-70],[-22,-70],[-27,-71],[-33,-72],[-38,-73],[-42,-73],[-46,-74],[-50,-75],[-52,-74],[-53,-70],[-55,-65],[-54,-58],[-53,-57],[-50,-58],[-46,-52],[-42,-52],[-38,-50],[-33,-47],[-29,-50],[-23,-45],[-22,-43],[-18,-40],[-14,-39],[-10,-36],[-6,-35],[-3,-38],[-1,-40],[0,-50],[3,-52],[5,-53],[6,-57],[8,-60],[8,-63],[5,-61],[4,-63],[6,-64],[7,-65],[6,-67],[5,-68],[2,-68],[0,-70],[-3,-69],[-5,-68],[-5,-66],[-7,-63],[-10,-58],[-10,-55],[-12,-53],[-14,-52],[-17,-53],[-20,-50],[-23,-46],[-26,-40],[-28,-48],[-30,-48],[-33,-44],[-36,-48],[-40,-50],[-45,-52],[-48,-54],[-52,-68],[-50,-75],[-46,-74],[-42,-73],[-36,-72],[-24,-70],[-14,-76],[-8,-78],[-4,-80],[-1,-80],[2,-76],[4,-77],[8,-77],[10,-75],[12,-72],
+  ]);
+
+  // ── EUROPE ──
+  continent([
+    [36,28],[38,26],[40,26],[41,29],[42,24],[43,22],[44,20],[43,17],[45,14],[44,12],[43,12],[44,10],[47,10],[48,14],[47,17],[47,18],[48,20],[50,24],[52,23],[54,24],[55,26],[57,27],[59,28],[60,24],[60,20],[59,18],[57,18],[57,21],[55,25],[57,27],[58,30],[56,29],[55,22],[55,18],[54,22],[56,16],[55,13],[55,10],[57,8],[59,6],[62,5],[64,10],[66,15],[68,17],[70,19],[71,24],[70,27],[67,32],[67,35],[66,46],[63,36],[61,28],[59,38],[57,41],[56,44],[55,50],[57,55],[57,58],[54,65],[57,68],[57,70],[58,72],[55,60],[61,51],[62,48],[65,50],[66,47],[68,50],[69,53],[70,57],[72,57],[74,62],[73,55],[74,48],[72,44],[68,44],[68,40],[65,45],[63,40],[61,28],[59,28],[57,27],[55,26],[53,23],[50,22],[48,20],[47,17],[47,10],[44,10],[43,12],[45,14],[43,17],[44,20],[43,22],[42,24],[40,26],[38,27],[36,28],
+  ]);
+
+  // ── RUSSIA (simplified blob) ──
+  continent([
+    [55,32],[57,32],[58,38],[60,35],[60,31],[62,34],[63,40],[65,45],[66,46],[68,40],[68,44],[70,44],[72,44],[74,46],[74,62],[73,72],[71,75],[68,73],[66,70],[66,68],[67,67],[68,65],[70,62],[70,60],[68,60],[66,58],[64,57],[62,55],[60,52],[61,51],[62,48],[64,48],[66,47],[68,50],[69,53],[70,57],[72,57],[74,62],[75,60],[73,55],[74,52],[73,50],[72,44],[70,44],[68,44],[70,38],[72,36],[76,35],[80,35],[84,36],[88,34],[90,34],[92,32],[94,32],[96,30],[96,28],[97,26],[97,24],[96,22],[98,22],[100,21],[102,20],[102,18],[104,18],[104,10],[107,10],[108,12],[108,18],[110,18],[114,20],[116,22],[118,22],[120,22],[120,20],[118,20],[114,20],[112,18],[108,12],[107,10],[106,8],[104,4],[103,2],[101,2],[100,4],[100,14],[101,18],[103,16],[104,10],[103,6],[104,2],[106,4],[108,10],[108,16],[110,18],[114,20],[118,22],[120,22],[122,22],[126,22],[126,28],[124,32],[122,32],[121,32],[120,32],[119,30],[120,26],[120,22],[121,22],[122,22],[124,24],[126,22],[126,20],[120,20],[116,20],[112,18],[109,20],[108,22],[110,20],[112,18],[110,18],[108,18],[108,16],[108,10],[106,8],[104,4],[103,2],[100,4],[100,10],[100,16],[101,18],[103,16],[104,10],[104,8],[103,6],[103,4],[101,2],[100,4],[100,6],[100,10],[100,14],[100,16],[101,18],[102,18],[103,16],[104,14],[104,10],[103,6],[104,2],[106,4],[108,10],[108,16],[110,18],[112,18],[114,20],[116,22],[120,22],[122,22],[124,24],[126,22],[125,20],[122,20],[118,20],[116,20],[112,18],[110,18],[108,18],[106,18],[105,18],[104,18],[104,14],[104,8],[103,6],[101,2],[100,4],[100,14],[101,18],[102,18],[100,21],[98,22],[96,22],[96,24],[96,28],[94,32],[90,34],[86,34],[82,36],[76,35],[72,36],[68,40],[67,44],[65,45],[63,40],[61,28],[59,28],[57,32],[55,32],
+  ]);
+
+  // ── AFRICA ──
+  continent([
+    [37,10],[38,8],[38,6],[37,5],[32,2],[22,-17],[15,-17],[10,-15],[5,-5],[4,-7],[5,-2],[4,2],[5,3],[3,1],[1,4],[2,9],[4,11],[4,14],[5,18],[4,21],[3,22],[0,24],[-2,27],[-3,30],[-5,34],[-8,36],[-14,36],[-18,38],[-24,35],[-28,32],[-32,27],[-34,24],[-32,20],[-26,15],[-22,14],[-18,16],[-15,14],[-12,14],[-10,11],[-8,9],[-4,10],[-2,14],[-1,17],[2,22],[5,25],[4,27],[6,30],[9,32],[10,30],[13,24],[15,23],[16,25],[15,28],[14,30],[12,30],[10,32],[9,35],[12,36],[15,39],[15,41],[12,43],[12,45],[11,47],[11,51],[8,45],[5,43],[4,42],[1,40],[0,40],[-2,38],[-4,38],[-6,40],[-8,38],[-8,34],[-10,32],[-12,31],[-14,27],[-14,25],[-12,18],[-10,16],[-5,13],[-1,5],[0,2],[4,2],[8,2],[8,-3],[4,-9],[2,-13],[0,-18],[-4,-25],[-8,-24],[-12,-20],[-16,-15],[-20,-8],[-18,-2],[-12,4],[-8,10],[-4,13],[0,20],[5,23],[8,22],[12,18],[16,14],[20,10],[24,6],[28,4],[30,3],[32,2],[34,1],[36,3],[37,5],[37,10],
+  ]);
+
+  // ── ASIA (main landmass without Russia) ──
+  continent([
+    [10,104],[8,98],[5,100],[2,103],[1,104],[3,110],[4,108],[5,103],[6,100],[5,100],[3,101],[2,103],[1,104],[2,108],[4,108],[5,115],[4,118],[5,120],[8,110],[10,104],
+  ]);
+  continent([
+    [36,28],[38,27],[40,26],[41,29],[42,24],[43,22],[44,20],[43,17],[45,14],[44,12],[44,10],[47,10],[48,14],[47,17],[47,18],[48,20],[50,24],[52,23],[54,24],[55,26],[57,27],[59,28],[60,26],[60,24],[60,20],[62,34],[63,40],[65,45],[66,46],[68,40],[68,44],[70,44],[72,44],[74,46],[74,48],[73,55],[73,62],[73,72],[71,75],[70,73],[68,73],[66,70],[66,68],[67,67],[68,65],[70,62],[70,60],[68,60],[66,58],[64,57],[62,55],[60,52],[61,51],[62,48],[64,48],[66,47],[68,50],[70,57],[72,57],[74,62],[75,60],[73,55],[72,44],[68,44],[70,38],[72,36],[76,35],[80,35],[84,36],[88,34],[90,34],[92,32],[94,32],[96,30],[96,28],[97,24],[96,22],[98,22],[100,21],[102,20],[102,18],[104,18],[104,14],[103,16],[102,18],[101,18],[100,16],[100,14],[100,10],[100,4],[101,2],[103,2],[104,4],[106,8],[107,10],[108,12],[108,18],[110,18],[112,18],[114,20],[116,22],[118,22],[120,22],[122,22],[124,24],[126,22],[126,24],[124,32],[122,32],[121,32],[120,32],[119,30],[120,26],[120,22],[121,22],[125,22],[126,24],[126,28],[124,32],[122,32],[120,32],[119,30],[118,24],[116,22],[114,22],[112,18],[110,18],[108,18],[108,16],[108,12],[107,10],[106,8],[104,4],[103,2],[104,2],[106,4],[108,10],[108,16],[110,18],[112,18],[114,20],[116,22],[118,24],[120,26],[120,32],[121,32],[122,32],[124,32],[126,28],[126,22],[125,20],[122,20],[120,20],[116,20],[114,20],[112,18],[110,18],[108,18],[106,18],[104,18],[104,14],[104,10],[104,8],[103,6],[101,2],[100,4],[100,14],[101,18],[102,18],[100,21],[98,22],[96,22],[94,32],[90,34],[86,34],[82,36],[76,35],[72,36],[68,40],[67,44],[65,45],[63,40],[61,28],[59,28],[57,27],[54,26],[52,23],[50,24],[48,20],[47,17],[47,10],[44,10],[43,12],[45,14],[43,17],[44,20],[43,22],[42,24],[40,26],[38,27],[36,28],
+  ]);
+
+  // ── INDIAN SUBCONTINENT ──
+  continent([
+    [24,68],[22,68],[20,70],[18,72],[10,76],[8,78],[8,80],[10,80],[12,80],[14,80],[16,80],[18,82],[20,84],[22,86],[24,88],[26,88],[26,90],[24,90],[22,90],[20,88],[18,84],[8,78],[10,76],[18,72],[20,70],[22,68],[24,68],
+  ]);
+  continent([
+    [36,68],[34,70],[32,74],[30,76],[28,78],[26,88],[24,90],[22,90],[20,88],[18,84],[14,80],[8,78],[10,76],[18,72],[20,70],[22,68],[24,68],[26,66],[28,64],[26,62],[24,62],[22,68],[20,70],[18,72],[10,76],[8,78],[8,80],[10,80],[14,80],[18,84],[22,90],[24,90],[26,90],[28,78],[30,76],[32,74],[34,70],[36,68],
+  ]);
+
+  // ── SOUTHEAST ASIA (peninsula) ──
+  continent([
+    [22,100],[20,100],[18,100],[16,100],[14,100],[12,100],[10,100],[8,100],[6,100],[5,100],[4,100],[5,103],[6,103],[8,104],[10,104],[12,102],[14,100],[16,100],[18,100],[20,100],[22,100],
+  ]);
+  continent([
+    [22,98],[20,96],[18,96],[16,98],[14,100],[12,100],[10,100],[8,100],[6,100],[5,100],[3,101],[2,103],[1,104],[2,108],[4,108],[5,115],[4,118],[5,120],[6,120],[8,116],[10,114],[12,110],[14,108],[16,108],[18,104],[20,102],[22,100],[22,98],
+  ]);
+
+  // ── AUSTRALIA ──
+  continent([
+    [-14,130],[-12,132],[-12,136],[-14,136],[-15,138],[-16,140],[-17,142],[-16,146],[-15,148],[-16,150],[-18,148],[-20,148],[-22,150],[-24,152],[-28,153],[-32,152],[-34,151],[-36,150],[-38,147],[-38,144],[-36,146],[-36,150],[-34,151],[-32,152],[-28,153],[-24,152],[-20,148],[-16,150],[-14,150],[-12,144],[-12,138],[-12,136],[-14,130],[-16,124],[-19,122],[-22,116],[-26,114],[-30,116],[-32,116],[-34,118],[-32,120],[-28,116],[-22,116],[-19,122],[-16,124],[-14,130],
+  ]);
+
+  // ── NEW ZEALAND ──
+  continent([
+    [-34,172],[-36,174],[-37,175],[-38,176],[-39,176],[-41,174],[-42,172],[-44,170],[-46,168],[-46,168],[-44,170],[-42,172],[-40,172],[-38,176],[-36,174],[-34,172],
+  ]);
+
+  // ── JAPAN ──
+  continent([
+    [31,130],[33,131],[35,133],[36,136],[37,138],[38,141],[40,140],[42,141],[44,143],[44,141],[43,140],[41,140],[40,140],[39,141],[38,141],[37,138],[36,136],[34,134],[33,131],[31,130],
+  ]);
+
+  // ── UK + IRELAND (simplified) ──
+  continent([
+    [50,-6],[52,-4],[54,-3],[56,-3],[58,-4],[58,-3],[57,-2],[55,-2],[54,-1],[53,0],[52,2],[51,1],[50,0],[50,-3],[50,-6],
+  ]);
+  continent([
+    [51,-10],[53,-10],[55,-8],[54,-6],[52,-6],[51,-8],[51,-10],
+  ]);
+
+  // Draw lat/lng grid — very subtle dark grey
+  ctx.strokeStyle = '#111111';
+  ctx.lineWidth = 0.5;
+  for (let lat = -75; lat <= 75; lat += 15) {
+    ctx.beginPath();
+    const [,y] = p(lat, -180);
+    ctx.moveTo(0, y); ctx.lineTo(W, y);
+    ctx.stroke();
+  }
+  for (let lng = -180; lng <= 180; lng += 15) {
+    ctx.beginPath();
+    const [x] = p(0, lng);
+    ctx.moveTo(x, 0); ctx.lineTo(x, H);
+    ctx.stroke();
+  }
+
+  return cv;
+}
+
+// ── THREE.JS SETUP ──
+const canvas = document.getElementById('gc');
+const wrap   = canvas.parentElement;
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 1);
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+camera.position.z = 2.75;
+const globe  = new THREE.Group();
+scene.add(globe);
+const R = 1.0;
+
+// Build texture and apply to sphere
+const mapCanvas = buildMapTexture();
+const tex = new THREE.CanvasTexture(mapCanvas);
+const sphere = new THREE.Mesh(
+  new THREE.SphereGeometry(R, 64, 64),
+  new THREE.MeshPhongMaterial({
+    map: tex,
+    specular: new THREE.Color(0x111111),
+    shininess: 4,
+  })
+);
+globe.add(sphere);
+
+// Subtle atmosphere rim
+const atmMat = new THREE.ShaderMaterial({
+  transparent: true, side: THREE.BackSide, depthWrite: false,
+  blending: THREE.AdditiveBlending,
+  vertexShader: `varying vec3 vN; void main(){ vN=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+  fragmentShader: `varying vec3 vN; void main(){ float i=pow(0.65-dot(vN,vec3(0,0,1)),3.0); gl_FragColor=vec4(0.05,0.05,0.1,i*0.4);}`
+});
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(R * 1.05, 48, 48), atmMat));
+
+// Lighting
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const kl = new THREE.DirectionalLight(0xffffff, 0.8);
+kl.position.set(4, 2, 3); scene.add(kl);
+
+// ── MARKERS ──
+function latLng(lat, lng, r) {
+  const phi   = (90 - lat)  * Math.PI / 180;
+  const theta = (lng + 180) * Math.PI / 180;
+  return new THREE.Vector3(
+    -r * Math.sin(phi) * Math.cos(theta),
+     r * Math.cos(phi),
+     r * Math.sin(phi) * Math.sin(theta)
+  );
+}
+
+const clrMap = { hot: 0xCC2200, warm: 0xDD7700, cold: 0x2255AA };
+const markers = [], glows = [];
+
+FOCOS.forEach(f => {
+  const pos = latLng(f.lat, f.lng, R).normalize().multiplyScalar(R * 1.02);
+  const dot = new THREE.Mesh(
+    new THREE.SphereGeometry(0.022, 10, 10),
+    new THREE.MeshBasicMaterial({ color: clrMap[f.status] })
+  );
+  dot.position.copy(pos);
+  dot.userData = f;
+  globe.add(dot);
+  markers.push(dot);
+
+  const glow = new THREE.Mesh(
+    new THREE.SphereGeometry(0.036, 10, 10),
+    new THREE.MeshBasicMaterial({ color: clrMap[f.status], transparent: true, opacity: 0.15 })
+  );
+  glow.position.copy(pos);
+  globe.add(glow);
+  glows.push({ m: glow, p: Math.random() * Math.PI * 2, hot: f.status !== 'cold' });
+});
+
+// ── RESIZE ──
+function resize() {
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+resize(); window.addEventListener('resize', resize);
+
+// ── INPUT ──
+let drag=false, autoSpin=true, lx=0, ly=0, vx=0, vy=0, cs={x:0,y:0};
+const hint = document.getElementById('hint');
+
+wrap.addEventListener('mousedown', e => {
+  drag=true; autoSpin=false; lx=e.clientX; ly=e.clientY; vx=vy=0;
+  cs={x:e.clientX,y:e.clientY}; hint.style.opacity='0';
+});
+window.addEventListener('mouseup', () => { drag=false; });
+window.addEventListener('mousemove', e => {
+  if(!drag) return;
+  vx=e.clientX-lx; vy=e.clientY-ly;
+  globe.rotation.y += vx*0.005;
+  globe.rotation.x = Math.max(-1.2, Math.min(1.2, globe.rotation.x + vy*0.005));
+  lx=e.clientX; ly=e.clientY;
+});
+wrap.addEventListener('touchstart', e => {
+  drag=true; autoSpin=false; lx=e.touches[0].clientX; ly=e.touches[0].clientY; hint.style.opacity='0';
+}, {passive:true});
+window.addEventListener('touchend', () => { drag=false; });
+window.addEventListener('touchmove', e => {
+  if(!drag) return;
+  vx=e.touches[0].clientX-lx; vy=e.touches[0].clientY-ly;
+  globe.rotation.y += vx*0.005;
+  globe.rotation.x = Math.max(-1.2, Math.min(1.2, globe.rotation.x + vy*0.004));
+  lx=e.touches[0].clientX; ly=e.touches[0].clientY;
+}, {passive:true});
+
+// ── CLICK ──
+const rc = new THREE.Raycaster();
+const m2 = new THREE.Vector2();
+wrap.addEventListener('mouseup', e => {
+  if(Math.abs(e.clientX-cs.x)>5 || Math.abs(e.clientY-cs.y)>5) return;
+  const r = wrap.getBoundingClientRect();
+  m2.x =  ((e.clientX - r.left) / r.width)  * 2 - 1;
+  m2.y = -((e.clientY - r.top)  / r.height) * 2 + 1;
+  rc.setFromCamera(m2, camera);
+  const hits = rc.intersectObjects(markers);
+  if(hits.length) showFoco(hits[0].object.userData);
+});
+
+// ── PANEL ──
+function showFoco(f) {
+  document.getElementById('pempty').style.display='none';
+  document.getElementById('pfoco').classList.add('on');
+  document.getElementById('ptitle').textContent = f.name;
+  document.getElementById('fname').textContent  = f.name;
+  document.getElementById('freg').textContent   = f.region;
+  document.getElementById('fsum').textContent   = f.sum;
+  const d=document.getElementById('fdot'); d.className=`sdot ${f.status}`;
+  const s=document.getElementById('fslbl'); s.textContent=f.label; s.className=`slbl ${f.status}`;
+  document.getElementById('find').innerHTML = f.ind.map(i =>
+    `<div class="irow"><span class="iname">${i.n}</span><span class="ival ${i.c}">${i.v}</span></div>`
+  ).join('');
+  document.querySelectorAll('.fitem').forEach(el => el.classList.remove('on'));
+  const li = document.querySelector(`[data-id="${f.id}"]`);
+  if(li) li.classList.add('on');
+}
+
+// ── ROTATE TO ──
+function rotateTo(f) {
+  const ty = -(f.lng * Math.PI / 180) - Math.PI / 2;
+  const tx = -(f.lat * Math.PI / 180) * 0.55;
+  const sy = globe.rotation.y, sx = globe.rotation.x;
+  let t = 0;
+  (function step() {
+    t += 0.03;
+    if(t >= 1) { globe.rotation.y=ty; globe.rotation.x=tx; return; }
+    const e = t<.5 ? 2*t*t : -1+(4-2*t)*t;
+    globe.rotation.y = sy + (ty-sy)*e;
+    globe.rotation.x = sx + (tx-sx)*e;
+    requestAnimationFrame(step);
+  })();
+}
+
+// ── LIST ──
+const fgrid = document.getElementById('fgrid');
+const dc = { hot:'#CC2200', warm:'#DD7700', cold:'#2255AA' };
+FOCOS.forEach(f => {
+  const el = document.createElement('div');
+  el.className='fitem'; el.dataset.id=f.id;
+  el.innerHTML=`<div class="ldot" style="background:${dc[f.status]}"></div><div><div class="lname">${f.name}</div><div class="lreg">${f.region}</div></div>`;
+  el.addEventListener('click', () => { showFoco(f); rotateTo(f); });
+  fgrid.appendChild(el);
+});
+
+// ── ANIMATE ──
+let tick = 0;
+function animate() {
+  requestAnimationFrame(animate);
+  tick += 0.016;
+  if(autoSpin) globe.rotation.y += 0.0012;
+  else if(!drag) { vx*=0.93; vy*=0.93; globe.rotation.y+=vx*0.003; globe.rotation.x+=vy*0.003; }
+  glows.forEach(g => {
+    if(!g.hot) return;
+    const p2 = 0.5 + 0.5 * Math.sin(tick * 2.2 + g.p);
+    g.m.material.opacity = 0.06 + 0.16 * p2;
+    const s = 1 + 0.55 * p2; g.m.scale.set(s,s,s);
+  });
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
